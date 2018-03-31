@@ -19,7 +19,12 @@ public class Train {
     }
 
     private String trainName;
-//    private int numberOfCoaches;
+
+    public List<Coach> getCoachList() {
+        return coachList;
+    }
+
+    //    private int numberOfCoaches;
     private List<Coach> coachList;
 
 //    public Train(int tn, int rn, int noc, List<Coach> cl) {

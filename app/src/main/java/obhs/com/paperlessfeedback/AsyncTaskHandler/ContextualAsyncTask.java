@@ -56,8 +56,6 @@ public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalCo
         selectTrainSpinner.setAdapter(trainSpinnerAdapter);
 
         //enable submit button
-
-        //enable submit button
         Button submitButton = (Button) mainDashboardView.findViewById(R.id.submitTrain);
         submitButton.setEnabled(true);
     }

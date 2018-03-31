@@ -4,11 +4,16 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 
+import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
+import obhs.com.paperlessfeedback.Beans.Train;
+import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.R;
 
 /**
@@ -28,10 +33,20 @@ public class TrainSelectionFragment extends Fragment {
         view = inflater.inflate(R.layout.train_selection_fragment, container, false);
 
         /////mannipec///
-                Button submitButton = (Button) view.findViewById(R.id.submitTrain);
+        Button submitButton = (Button) view.findViewById(R.id.submitTrain);
+        final Spinner selectTrainSpinner = view.findViewById(R.id.selectTrainDropDown);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //get selectedTrain and create trip
+                GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+                globalContext.setCurrentTrainIndex(selectTrainSpinner.getSelectedItemId());
+                Train selectedTrain = globalContext.getCurrentTrain();
+                Log.d("debugTag", "selectedTrain: " +  selectedTrain.getTrainName());
+                Trip currentTrip = new Trip(selectedTrain);
+                globalContext.setCurrentTrip(currentTrip);
+
+                //load fragment
                 loadFragment(new DashboardFragment());
             }
         });
