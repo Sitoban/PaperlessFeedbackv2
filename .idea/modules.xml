@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PaperlessFeedback.iml" filepath="$PROJECT_DIR$/PaperlessFeedback.iml" />
+      <module fileurl="file://C:\storage\androidRepo\PaperlessFeedbackv2\PaperlessFeedback.iml" filepath="C:\storage\androidRepo\PaperlessFeedbackv2\PaperlessFeedback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PaperlessFeedbackv2.iml" filepath="$PROJECT_DIR$/PaperlessFeedbackv2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
