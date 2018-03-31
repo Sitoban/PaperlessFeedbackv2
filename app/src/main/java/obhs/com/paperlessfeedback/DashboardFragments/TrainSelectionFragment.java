@@ -27,17 +27,32 @@ public class TrainSelectionFragment extends Fragment {
        // return inflater.inflate(R.layout.train_selection_fragment, container, false);
 
         view = inflater.inflate(R.layout.train_selection_fragment, container, false);
-// get the reference of Button
-        firstButton = (Button) view.findViewById(R.id.firstButton);
-// perform setOnClickListener on first Button
-        firstButton.setOnClickListener(new View.OnClickListener() {
+
+        /////mannipec///
+                Button submitButton = (Button) view.findViewById(R.id.submitTrain);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-// display a message by using a Toast
-               // Toast.makeText(getActivity(), "First Fragment", Toast.LENGTH_LONG).show();
+            public void onClick(View view) {
                 loadFragment(new DashboardFragment());
             }
         });
+
+        //disable submit button
+        submitButton.setEnabled(false);
+        ////////
+
+
+//// get the reference of Button
+//        firstButton = (Button) view.findViewById(R.id.firstButton);
+//// perform setOnClickListener on first Button
+//        firstButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//// display a message by using a Toast
+//               // Toast.makeText(getActivity(), "First Fragment", Toast.LENGTH_LONG).show();
+//                loadFragment(new DashboardFragment());
+//            }
+//        });
         return view;
 
     }
