@@ -49,10 +49,6 @@ public class DashboardActivity extends AppCompatActivity {
         // set mainDashboardView
 
         View view = findViewById(R.id.frameLayout);
-
-//        View view = view2.findViewById(R.id.mainDashboardView);
-        if(view == null)
-            Log.d("nulla", "na mila");
         globalContext.setMainDashboardView(view);
 
         //set submit button action
