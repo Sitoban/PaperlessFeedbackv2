@@ -1,4 +1,4 @@
-package obhs.com.paperlessfeedback.DashboardFragments;
+package obhs.com.paperlessfeedback.FeedbackFragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -17,25 +17,19 @@ import obhs.com.paperlessfeedback.R;
  * Created by 1018651 on 03/31/2018.
  */
 
-public class DashboardFragment extends Fragment {
-    @Override
+public class FeedbackFormFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.dashboard_fragment, container, false);
-        View view = inflater.inflate(R.layout.dashboard_fragment, container, false);
+        View view = inflater.inflate(R.layout.feedback_form_fragment, container, false);
 
-        Button takeFeedback = (Button) view.findViewById(R.id.takeFeedbackButton);
+        Button takeFeedback = (Button) view.findViewById(R.id.submitButton);
         takeFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity() , "Let's Start the Bad Boy", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity() , "Submitting Bad Boy", Toast.LENGTH_SHORT).show();
 
-                Context context = view.getContext();
-                Intent intent = new Intent(context, FeedbackActivity.class);
-//                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
-
-                context.startActivity(intent);
             }
         });
         return view;

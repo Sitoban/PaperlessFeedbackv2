@@ -9,6 +9,8 @@ import obhs.com.paperlessfeedback.Beans.Coach;
  */
 
 public class Util {
+
+    // need to be moved to Trip
     public static void setupCustomTrain(List<Coach> coachList) {
         //2 AC + 2 NON AC coach
         coachList.add(new Coach("A1", 70, Coach.CoachType.AC));

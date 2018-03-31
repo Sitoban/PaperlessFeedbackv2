@@ -17,7 +17,6 @@ import obhs.com.paperlessfeedback.R;
 
 public class TrainSelectionFragment extends Fragment {
     View view;
-    Button firstButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

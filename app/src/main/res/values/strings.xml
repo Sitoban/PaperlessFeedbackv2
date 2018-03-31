@@ -3,7 +3,21 @@
     <string name="end_trip">End Trip</string>
     <string name="completed_feedback">Completed Feedback</string>
     <string name="pending_feedback">Pending Feedback</string>
-    <string name="tt">TT</string>
+    <string name="tt">T.T.E.</string>
     <string name="passenger">Passenger</string>
     <string name="take_feedback">Take Feedback</string>
+    <string name="title_activity_faltu">Faltu</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>
