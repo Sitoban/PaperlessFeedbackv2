@@ -81,4 +81,13 @@ public class Coach implements Serializable {
             Log.d("debugTag", "" + seat);
         }
     }
+
+    public void addFeedback(Feedback feedback) {
+        if(feedback.getFeedbackType() == Feedback.FeedbackType.TTE)
+            tteFeedback.add(feedback);
+        else if (feedback.getFeedbackType() == Feedback.FeedbackType.PASSENGER)
+            pasFeedback.add(feedback);
+        else
+            Log.e("debugTag", "wrong feedback type");
+    }
 }

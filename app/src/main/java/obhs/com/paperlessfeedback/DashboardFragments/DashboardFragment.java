@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 
 import android.widget.ArrayAdapter;
@@ -81,6 +82,8 @@ public class DashboardFragment extends Fragment {
 
                 intent.putExtra("coach", currentCoach);
                 intent.putExtra("seatNumber", currentCoach.getRandomSeat());
+                //edit: pass appropriate type
+                intent.putExtra("feedbackType", Feedback.FeedbackType.PASSENGER);
                 context.startActivity(intent);
             }
         });

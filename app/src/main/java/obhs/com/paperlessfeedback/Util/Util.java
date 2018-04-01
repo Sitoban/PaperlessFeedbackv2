@@ -1,5 +1,8 @@
 package obhs.com.paperlessfeedback.Util;
 
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
 import java.util.List;
 import java.util.Random;
 
@@ -35,5 +38,11 @@ public class Util {
             int j = random.nextInt(i);
             swapArrayVal(ar, i-1, j);
         }
+    }
+
+    public static String getCheckedRadioButtonText(RadioGroup radioGroup) {
+        RadioButton radioButton = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+        String buttonText = radioButton.getText().toString();
+        return buttonText;
     }
 }
