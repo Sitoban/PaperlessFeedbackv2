@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PaperlessFeedback</string>
+    <string name="app_name">Paperless Feedback</string>
     <string name="end_trip">End Trip</string>
     <string name="completed_feedback">Completed Feedback</string>
     <string name="pending_feedback">Pending Feedback</string>
