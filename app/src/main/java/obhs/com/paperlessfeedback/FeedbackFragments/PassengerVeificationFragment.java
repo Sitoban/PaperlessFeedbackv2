@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.R;
 
@@ -30,15 +31,23 @@ public class PassengerVeificationFragment extends Fragment{
     View view;
     private static final String TAG = "Feedback";
     private static String otpNumber;
+    private Coach currentCoach;
+    private int currentSeatNumber;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.passenger_verification_fragment, container, false);
         return view;
     }
+
+    public PassengerVeificationFragment(Coach coach, int currentSeatNumber) {
+        this.currentCoach = coach;
+        this.currentSeatNumber = currentSeatNumber;
+    }
+
     public String generateOTP()
     {
-        int max = 9999;
+        int max = 9000;
         int min = 1000;
         // create instance of Random class
         Random randomNum = new Random();
@@ -144,5 +153,9 @@ public class PassengerVeificationFragment extends Fragment{
 
             }
         });
+
+        //set coach number and seat number for feedback
+        TextView textView = getView().findViewById(R.id.seatNumberTextView);
+        textView.setText("Coach : " + currentCoach.getCoachNumber() + ", Seat: " + currentSeatNumber);
     }
 }

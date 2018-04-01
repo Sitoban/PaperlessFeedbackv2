@@ -1,10 +1,19 @@
 package obhs.com.paperlessfeedback.Beans;
 
+import android.util.Log;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import obhs.com.paperlessfeedback.Util.Util;
+
 /**
  * Created by mannis on 31-Mar-18.
  */
 
-public class Coach {
+public class Coach implements Serializable {
     public enum CoachType {
         AC,
         NON_AC;
@@ -13,6 +22,9 @@ public class Coach {
     private String coachNumber;
     private int numberOfSeats;
     private CoachType coachType;
+    private List<Feedback> tteFeedback= new ArrayList<Feedback>();
+    private List<Feedback> pasFeedback= new ArrayList<Feedback>();
+    private List<Integer> randomSeatList;
 
     public String getCoachNumber() {
         return coachNumber;
@@ -30,5 +42,43 @@ public class Coach {
         coachNumber = cn;
         numberOfSeats = nos;
         coachType = ct;
+        initRandomSeats();
+    }
+
+    public void initRandomSeats() {
+        int[]seatArray = new int[numberOfSeats];
+        for (int i = 1; i<=numberOfSeats; i++)
+            seatArray[i-1] = i;
+
+        Util.randomizeArray(seatArray, numberOfSeats);
+        randomSeatList = new ArrayList<Integer>();
+        for (int i = 1; i<=numberOfSeats; i++)
+            randomSeatList.add(seatArray[i-1]);
+    }
+
+    public Boolean isSeatAvailableForFeedback() {
+        if(randomSeatList.size()>0)
+            return true;
+
+        return false;
+    }
+
+    //get a random seat number and delete it for later
+    public int getRandomSeat() {
+        printSeats();
+        if(randomSeatList.size()== 0)
+            return 0;
+        int size = randomSeatList.size();
+        int seatNumber = randomSeatList.get(size - 1);
+        randomSeatList.remove(size - 1);
+        return seatNumber;
+    }
+
+    //debug methods
+    public void printSeats() {
+        Log.d("debugTag", "printing seats:");
+        for(int seat : randomSeatList) {
+            Log.d("debugTag", "" + seat);
+        }
     }
 }

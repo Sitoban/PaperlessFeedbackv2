@@ -56,24 +56,37 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.dashboard_fragment, container, false);
         View view = inflater.inflate(R.layout.dashboard_fragment, container, false);
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
 
         Button takeFeedback = (Button) view.findViewById(R.id.takeFeedbackButton);
+        final Spinner coachSelectionSpinner = view.findViewById(R.id.coachSelectionSpinner);
         takeFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validating if seat is available for feedback
+                long coachIndex = coachSelectionSpinner.getSelectedItemId();
+                Coach currentCoach = globalContext.getCurrentTrain().getCoachList().get((int)coachIndex);
+                if(!currentCoach.isSeatAvailableForFeedback()) {
+                    Toast.makeText(getActivity() , "No seat available, for feedback in this coach", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Toast.makeText(getActivity() , "Let's Start the Bad Boy", Toast.LENGTH_SHORT).show();
 
                 Context context = view.getContext();
                 Intent intent = new Intent(context, FeedbackActivity.class);
+
+                //adding coach info to new acitivity
 //                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
 
+                intent.putExtra("coach", currentCoach);
+                intent.putExtra("seatNumber", currentCoach.getRandomSeat());
                 context.startActivity(intent);
             }
         });
 
         setupCoachSpinner(view);
 
-        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
         Button endTripButton = view.findViewById(R.id.endTripButton);
         endTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
