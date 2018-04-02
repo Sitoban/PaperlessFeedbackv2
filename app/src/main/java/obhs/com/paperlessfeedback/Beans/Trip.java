@@ -2,6 +2,7 @@ package obhs.com.paperlessfeedback.Beans;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -24,11 +25,18 @@ public class Trip {
 
     private TripStatus tripStatus;
 
+    private void createTripId() {
+        String tripIdString = new SimpleDateFormat("yyyyMMdd").format(startTime) + train.getTrainNumber();
+        tripId = Long.parseLong(tripIdString);
+//        Log.d("debugTag", "tripId: "+ tripId);
+    }
+
     public Trip(Train t) {
         //edit: initialize tripId'
         train = t;
         startTime = new Date();
         tripStatus = TripStatus.GOING;
+        createTripId();
     }
 
     public void setNextTripState() {
