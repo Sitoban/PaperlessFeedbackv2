@@ -1,6 +1,5 @@
 package obhs.com.paperlessfeedback.FeedbackFragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 import java.util.Random;
 
 import obhs.com.paperlessfeedback.Beans.Coach;
+import obhs.com.paperlessfeedback.DashboardActivity;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.R;
@@ -84,7 +84,6 @@ public class PassengerVeificationFragment extends Fragment{
         final AutoCompleteTextView otpNumberField = (AutoCompleteTextView) view.findViewById(R.id.otp_number);
         final TextInputLayout textInputOtpNumberField = (TextInputLayout) view.findViewById(R.id.text_input_otp_number);
 
-        final TextView result = (TextView) view.findViewById(R.id.result);
 
         otpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,27 +122,15 @@ public class PassengerVeificationFragment extends Fragment{
                 if(true)
                 {
                     Toast.makeText(getActivity() , "Passenger Verification Successful", Toast.LENGTH_SHORT).show();
-
-//                    FeedbackActivity activity = (FeedbackActivity)getActivity();
-//                    FeedbackFormFragment feedbackFormFragment = new FeedbackFormFragment(activity.getCurrentFeedBackType(), activity.g);
-//                    loadFragment(feedbackFormFragment);
                     loadFragment(new FeedbackFormFragment());
-
-                    //result.setText("Success");
                 }
                 else
                 {
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 
-                    // Setting Dialog Title
                     alertDialog.setTitle("Alert Dialog");
 
-                    // Setting Dialog Message
                     alertDialog.setMessage("Invalid OTP");
-
-                    // Setting Icon to Dialog
-
-                    // Setting OK Button
                     alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Write your code here to execute after dialog closed
@@ -163,5 +150,15 @@ public class PassengerVeificationFragment extends Fragment{
         FeedbackActivity feedbackActivity = (FeedbackActivity) getActivity();
         TextView textView = getView().findViewById(R.id.seatNumberTextView);
         textView.setText("Coach : " + feedbackActivity.getCurrentCoach().getCoachNumber() + ", Seat: " + feedbackActivity.getCurrentSeatNumber());
+
+
+
+        Button cancelFeedbackButton = getView().findViewById(R.id.cancel_feedback);
+        cancelFeedbackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
     }
 }
