@@ -110,4 +110,9 @@ public class FeedbackObj {
         this.psi = psi;
     }
 
+    public String getQueryString()
+    {
+        return "PSI="+psi+"&CoachNumber="+coachNumber+"&SeatNumber="+seatNumber+"&MobileNumber="+mobileNumber+"&TrainNumber="+trainNumber+"&Date="+tripStartDate+"&TripID="+tripId+"&PNRNumber="+pnr;
+    }
+
 }
