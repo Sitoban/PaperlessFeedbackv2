@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Feedback;
+import obhs.com.paperlessfeedback.Beans.Passenger;
 import obhs.com.paperlessfeedback.FeedbackFragments.PassengerVeificationFragment;
 
 
@@ -20,6 +21,9 @@ public class FeedbackActivity extends AppCompatActivity {
     private Coach currentCoach;
     private int currentSeatNumber;
     private Feedback.FeedbackType currentFeedBackType;
+    private Passenger currentPassenger;
+
+    private Feedback currentFeedback;
 
     @Override
     public void onBackPressed() {
@@ -64,4 +68,11 @@ public class FeedbackActivity extends AppCompatActivity {
     public int getCurrentSeatNumber() {
         return currentSeatNumber;
     }
+
+    public void setCurrentPassenger(Passenger passenger) { currentPassenger = passenger; }
+
+    public Passenger getCurrentPassenger() { return currentPassenger; }
+    public Feedback getCurrentFeedback() { return currentFeedback; }
+
+    public void setCurrentFeedback(Feedback currentFeedback) { this.currentFeedback = currentFeedback; }
 }

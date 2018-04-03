@@ -3,6 +3,7 @@ package obhs.com.paperlessfeedback.FeedbackFragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +15,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
+import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
+import obhs.com.paperlessfeedback.Util.Util;
 
 import static obhs.com.paperlessfeedback.Util.Util.getCheckedRadioButtonText;
 
@@ -26,13 +31,12 @@ import static obhs.com.paperlessfeedback.Util.Util.getCheckedRadioButtonText;
 
 public class FeedbackFormFragment extends Fragment {
 
-    private Feedback currentFeedback;
-
     public void init(View view) {
 
         final FeedbackActivity feedbackActivity = (FeedbackActivity)getActivity();
-        currentFeedback = new Feedback(feedbackActivity.getCurrentFeedBackType(),
-                                feedbackActivity.getCurrentCoach().getCoachType());
+        feedbackActivity.setCurrentFeedback(new Feedback(feedbackActivity.getCurrentFeedBackType(),
+                                        feedbackActivity.getCurrentCoach().getCoachType()));
+        final Feedback currentFeedback = feedbackActivity.getCurrentFeedback();
 
         final Button nextQuestionButton = (Button) view.findViewById(R.id.nextQuestionButton);
         final Button submitFeedbackButton = (Button) view.findViewById(R.id.submitFeedbackButton);
@@ -67,11 +71,13 @@ public class FeedbackFormFragment extends Fragment {
         submitFeedbackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                submitFeedbackButton.setEnabled(false);
                 currentFeedback.addScoreByRating(getCheckedRadioButtonText(radioGroup));
                 currentFeedback.calculatePsi();
                 Toast.makeText(feedbackActivity,
                         "PSI: " + Double.toString(currentFeedback.getPsi()) + "%", Toast.LENGTH_LONG).show();
                 feedbackActivity.getCurrentCoach().addFeedback(currentFeedback);
+                addFeedbackToDatabase();
                 getActivity().finish();
             }
         });
@@ -87,5 +93,27 @@ public class FeedbackFormFragment extends Fragment {
         init(view);
 
         return view;
+    }
+
+    public void addFeedbackToDatabase() {
+        GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        final FeedbackActivity feedbackActivity = (FeedbackActivity)getActivity();
+
+        FeedbackObj feedbackObj = new FeedbackObj();
+        feedbackObj.setTripId(String.valueOf(globalContext.getCurrentTrip().getTripId()));
+        feedbackObj.setTrainNumber(String.valueOf(globalContext.getCurrentTrip().getTrain().getTrainNumber()));
+        feedbackObj.setTripStartDate(Util.getDateString(globalContext.getCurrentTrip().getStartTime()));
+        feedbackObj.setPnr(feedbackActivity.getCurrentPassenger().getPnr());
+        feedbackObj.setMobileNumber(feedbackActivity.getCurrentPassenger().getMobileNumber());
+        feedbackObj.setCoachNumber(feedbackActivity.getCurrentCoach().getCoachNumber());
+        feedbackObj.setSeatNumber(String.valueOf(feedbackActivity.getCurrentSeatNumber()));
+        feedbackObj.setPsi(String.valueOf(feedbackActivity.getCurrentFeedback().getPsi()));
+
+//        feedbackObj.setTrainNumber(String.valueOf(globalContext.getCurrentTrip().getTrain().getTrainNumber()));
+
+        AsyncTaskUtil.getFeedbackObjWriteAsyncTask(feedbackObj).execute(globalContext.getDb());
+
+        //edit: delete below
+        AsyncTaskUtil.getDatabaseReadAsyncTask().execute(globalContext.getDb());
     }
 }

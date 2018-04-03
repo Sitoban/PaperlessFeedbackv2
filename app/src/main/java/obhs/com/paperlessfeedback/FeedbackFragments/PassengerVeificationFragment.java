@@ -21,6 +21,7 @@ import java.util.Random;
 
 import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.DashboardActivity;
+import obhs.com.paperlessfeedback.Beans.Passenger;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.R;
@@ -71,6 +72,11 @@ public class PassengerVeificationFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG,"onViewCreated fragment Activity");
+
+        final View fragmentView = getView();
+
+        final FeedbackActivity feedbackActivity = (FeedbackActivity) getActivity();
+
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Feedback");
         final Button otpButton = (Button) view.findViewById(R.id.send_otp_button);
@@ -122,6 +128,16 @@ public class PassengerVeificationFragment extends Fragment{
                 if(true)
                 {
                     Toast.makeText(getActivity() , "Passenger Verification Successful", Toast.LENGTH_SHORT).show();
+
+//                    FeedbackActivity activity = (FeedbackActivity)getActivity();
+//                    FeedbackFormFragment feedbackFormFragment = new FeedbackFormFragment(activity.getCurrentFeedBackType(), activity.g);
+//                    loadFragment(feedbackFormFragment);
+
+                    //save pnr and mobile
+                    String mobileNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.mobile_number)).getText().toString();
+                    String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
+                    feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, pnrNumber));
+
                     loadFragment(new FeedbackFormFragment());
                 }
                 else
@@ -147,7 +163,6 @@ public class PassengerVeificationFragment extends Fragment{
         });
 
         //set coach number and seat number for feedback
-        FeedbackActivity feedbackActivity = (FeedbackActivity) getActivity();
         TextView textView = getView().findViewById(R.id.seatNumberTextView);
         textView.setText("Coach : " + feedbackActivity.getCurrentCoach().getCoachNumber() + ", Seat: " + feedbackActivity.getCurrentSeatNumber());
 

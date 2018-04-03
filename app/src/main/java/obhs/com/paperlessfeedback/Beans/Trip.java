@@ -56,4 +56,16 @@ public class Trip {
     public TripStatus getTripStatus() {
         return tripStatus;
     }
+
+    public long getTripId() {
+        return  tripId;
+    }
+
+    public Train getTrain() {
+        return train;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
 }

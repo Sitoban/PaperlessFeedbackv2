@@ -3,6 +3,9 @@ package obhs.com.paperlessfeedback.Util;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -45,4 +48,9 @@ public class Util {
         String buttonText = radioButton.getText().toString();
         return buttonText;
     }
+
+    public static String getDateString(Date date) {
+        return (new SimpleDateFormat("dd-MM-yyyy").format(date));
+    }
+
 }

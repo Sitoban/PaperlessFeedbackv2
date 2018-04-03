@@ -8,6 +8,7 @@ import java.util.List;
 
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
+import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 
 /**
  * Created by mannis on 31-Mar-18.
@@ -18,6 +19,7 @@ public class GlobalContext extends Application{
     private View mainDashboardView;
     private long currentTrainIndex;
     private Trip currentTrip;
+    private static AppDatabase db;
 
     public long getCurrentTrainIndex() {
         return currentTrainIndex;
@@ -60,5 +62,13 @@ public class GlobalContext extends Application{
 //    public void setListOfTrains(List<Train> listOfTrains) {
 //        this.listOfTrains = listOfTrains;
 //    }
+
+    public AppDatabase getDb() {
+        return db;
+    }
+
+    public void setDb(AppDatabase db) {
+        GlobalContext.db = db;
+    }
 
 }
