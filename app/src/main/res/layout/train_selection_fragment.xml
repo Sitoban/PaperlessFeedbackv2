@@ -30,6 +30,8 @@
 
         <Button
             android:id="@+id/submitTrain"
+            style="?android:textAppearanceSmall"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start Trip" />

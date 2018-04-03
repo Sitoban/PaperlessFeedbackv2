@@ -6,12 +6,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="26dp">
 
         <TextView
             android:id="@+id/feedbackQuestionTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="150dp"
+            android:textSize="19dp" />
         <RadioGroup
             android:id="@+id/radioRatings"
             android:layout_width="match_parent"
@@ -22,18 +24,29 @@
                 android:id="@+id/radioExcellent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="19dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="Excellent" />
 
             <RadioButton
                 android:id="@+id/radioVeryGood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="19dp"
+
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="Very Good" />
 
             <RadioButton
                 android:id="@+id/radioGood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="19dp"
+
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="Good"
                 android:checked="true" />
 
@@ -41,12 +54,20 @@
                 android:id="@+id/radioVeryAverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="19dp"
+
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="Average" />
 
             <RadioButton
                 android:id="@+id/radioPoor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="19dp"
+
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="Poor" />
 
         </RadioGroup>
@@ -60,11 +81,15 @@
                 android:id="@+id/nextQuestionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="?android:textAppearanceSmall"
+                android:textStyle="bold"
                 android:text="Next" />
             <Button
                 android:id="@+id/submitFeedbackButton"
+                style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Submit Feedback" />
         </LinearLayout>
     </LinearLayout>
