@@ -22,7 +22,7 @@ public interface FeedbackObjDao {
     int countFeedbackObj();
 
     @Query("DELETE FROM feedbackObj")
-    void dropTable();
+    void delAll();
 
     @Insert
     void insertAll(FeedbackObj... feedbackObjs);
