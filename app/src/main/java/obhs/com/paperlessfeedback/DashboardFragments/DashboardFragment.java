@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 
@@ -52,6 +54,13 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        AsyncTaskUtil.getSetNumDbEntries(this).execute(globalContext);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -82,7 +91,7 @@ public class DashboardFragment extends Fragment {
 
                 intent.putExtra("coach", currentCoach);
                 intent.putExtra("seatNumber", currentCoach.getRandomSeat());
-                //edit: pass appropriate type
+                //edit: pass appropriate type -- TT or passenger
                 intent.putExtra("feedbackType", Feedback.FeedbackType.PASSENGER);
                 context.startActivity(intent);
             }
@@ -101,5 +110,11 @@ public class DashboardFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void setNumEntriesLocal(int n) {
+        Log.d("debugTag", "setting numEntries: " + n);
+        TextView numEntriesLocalTextView = getView().findViewById(R.id.numEntriesLocal);
+        numEntriesLocalTextView.setText("Sync Pending: " + n);
     }
 }

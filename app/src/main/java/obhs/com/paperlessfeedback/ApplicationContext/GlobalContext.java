@@ -19,15 +19,14 @@ public class GlobalContext extends Application{
     private View mainDashboardView;
     private long currentTrainIndex;
     private Trip currentTrip;
+    private int numLocalDbFeedbacks;
     private static AppDatabase db;
 
     public long getCurrentTrainIndex() {
         return currentTrainIndex;
     }
 
-    public void setCurrentTrainIndex(long currentTrainIndex) {
-        this.currentTrainIndex = currentTrainIndex;
-    }
+    public void setCurrentTrainIndex(long currentTrainIndex) { this.currentTrainIndex = currentTrainIndex; }
 
     public Train getCurrentTrain() {
         return trainsList.get((int)currentTrainIndex);
@@ -51,9 +50,7 @@ public class GlobalContext extends Application{
         trainsList.add(t);
     }
 
-    public void setMainDashboardView(View v) {
-        mainDashboardView = v;
-    }
+    public void setMainDashboardView(View v) { mainDashboardView = v; }
 
     public View getMainDashboardView() {
         return mainDashboardView;
@@ -63,12 +60,18 @@ public class GlobalContext extends Application{
 //        this.listOfTrains = listOfTrains;
 //    }
 
-    public AppDatabase getDb() {
-        return db;
-    }
+    public AppDatabase getDb() { return db; }
 
     public void setDb(AppDatabase db) {
         GlobalContext.db = db;
+    }
+
+    public int getNumLocalDbFeedbacks() {
+        return numLocalDbFeedbacks;
+    }
+
+    public void setNumLocalDbFeedbacks(int numLocalDbFeedbacks) {
+        this.numLocalDbFeedbacks = numLocalDbFeedbacks;
     }
 
 }

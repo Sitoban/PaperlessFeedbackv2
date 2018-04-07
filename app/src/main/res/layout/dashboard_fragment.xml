@@ -15,6 +15,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/syncButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sync" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numEntriesLocal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="16dp">
 
@@ -105,14 +122,15 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/ubuntu"
                 android:text="@string/tt"
-                android:checked="true"/>
+                android:enabled="false"/>
             <RadioButton
                 android:id="@+id/radioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/ubuntu"
-                android:text="@string/passenger" />
+                android:text="@string/passenger"
+                android:checked="true" />
         </RadioGroup>
     </LinearLayout>
         <Button

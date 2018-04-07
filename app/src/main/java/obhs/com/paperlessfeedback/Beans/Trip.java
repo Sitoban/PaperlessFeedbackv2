@@ -32,7 +32,6 @@ public class Trip {
     }
 
     public Trip(Train t) {
-        //edit: initialize tripId'
         train = t;
         startTime = new Date();
         tripStatus = TripStatus.GOING;

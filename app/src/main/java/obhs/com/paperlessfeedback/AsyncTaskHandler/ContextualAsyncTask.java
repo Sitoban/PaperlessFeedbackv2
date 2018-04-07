@@ -35,7 +35,7 @@ public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalCo
         //setting up custom train
         List<Coach> coachList = new ArrayList<Coach>();
         setupCustomTrain(coachList);
-        globalContext.addTrain(new Train("Chodu Train",12345, 1, coachList));
+        globalContext.addTrain(new Train("Very Nice Train",12345, 1, coachList));
         globalContext.addTrain(new Train("Shatabdi Express",94312, 1, coachList));
         return globalContext;
     }
