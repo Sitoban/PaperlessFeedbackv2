@@ -120,7 +120,7 @@ public class DashboardFragment extends Fragment {
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // new CloudConnection(null, globalContext.getLiveDashboardFragment()).execute(globalContext);
+                new CloudConnection(null, globalContext.getLiveDashboardFragment()).execute(globalContext);
             }
         });
 
