@@ -40,6 +40,9 @@ public class FeedbackObj {
     @ColumnInfo(name = "psi")
     private String psi;
 
+    @ColumnInfo(name = "trip_direction")
+    private int tripDirection;
+
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] faceImage;
 
@@ -126,6 +129,15 @@ public class FeedbackObj {
 
     public void setFaceImage(byte[] faceImage) {
         this.faceImage = faceImage;
+    }
+
+
+    public int getTripDirection() {
+        return tripDirection;
+    }
+
+    public void setTripDirection(int tripDirection) {
+        this.tripDirection = tripDirection;
     }
 
     public String getQueryString()

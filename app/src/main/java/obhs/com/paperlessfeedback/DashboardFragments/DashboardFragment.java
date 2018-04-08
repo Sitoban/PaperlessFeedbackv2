@@ -31,6 +31,7 @@ import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -55,12 +56,16 @@ public class DashboardFragment extends Fragment {
         takeFeedbackButton.setEnabled(true);
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
-//        AsyncTaskUtil.getSetNumDbEntries(this).execute(globalContext);
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        TextView completedFeedbackTextView = getView().findViewById(R.id.completedFeedbackTextView);
+        TextView pendingFeedbackTextView = getView().findViewById(R.id.pendingFeedbackTextView);
+
+        completedFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumCompletedFeedbacks()));
+        pendingFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumPendingFeedbacks()));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +99,8 @@ public class DashboardFragment extends Fragment {
                 //adding coach info to new acitivity
 //                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
 
-                intent.putExtra("coach", currentCoach);
+//                intent.putExtra("coach", currentCoach);
+                globalContext.setCurrentLiveCoach(currentCoach);
 //                Log.d("debugTag", "this Fragment indent push: " + (Serializable)thisFragment);
 //                intent.putExtra("dashboard", (Serializable)thisFragment);
                 intent.putExtra("seatNumber", currentCoach.getRandomSeat());
@@ -106,11 +112,21 @@ public class DashboardFragment extends Fragment {
 
         setupCoachSpinner(view);
 
-        Button endTripButton = view.findViewById(R.id.endTripButton);
+        final Button endTripButton = view.findViewById(R.id.endTripButton);
         endTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                globalContext.getCurrentTrip().setNextTripState();
+                if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING) {
+                    //edit: test that if number of pending sync > 0, then end trip is disabled
+                    boolean enable = (globalContext.getNumLocalDbFeedbacks() == 0)?true:false;
+                    endTripButton.setEnabled(enable);
+                    globalContext.getCurrentTrain().resetCoachNumFeedbacks();
+                    globalContext.getCurrentTrip().setNextTripState();
+                    endTripButton.setText("End Trip");
+                }
+                else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
+                    //edit: end trip here and go back to home home page
+                }
                 Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
                         Toast.LENGTH_LONG).show();
             }
@@ -120,7 +136,8 @@ public class DashboardFragment extends Fragment {
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // new CloudConnection(null, globalContext.getLiveDashboardFragment()).execute(globalContext);
+                FeedbackObj nullFeedbackObj = null;
+                new CloudConnection(globalContext).execute(nullFeedbackObj);
             }
         });
 
@@ -133,5 +150,10 @@ public class DashboardFragment extends Fragment {
 //        Log.d("debugTag", "thisView: " + getView());
         TextView numEntriesLocalTextView = getView().findViewById(R.id.numEntriesLocal);
         numEntriesLocalTextView.setText("Sync Pending: " + n);
+    }
+
+    public void setEndTripButtonEnabled(Boolean enable) {
+        Button endTripButton = getView().findViewById(R.id.endTripButton);
+        endTripButton.setEnabled(enable);
     }
 }

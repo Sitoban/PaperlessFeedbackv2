@@ -19,6 +19,7 @@ import java.util.List;
 import javax.microedition.khronos.opengles.GL;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
+import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
@@ -27,21 +28,25 @@ import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
  * Created by 1018651 on 04/03/2018.
  */
 
-public class CloudConnection extends AsyncTask<GlobalContext, Void, Integer> {
+public class CloudConnection extends AsyncTask<FeedbackObj, Void, Integer> {
 
-    private FeedbackObj feedbackObj;
-    private DashboardFragment liveDashboardFragment;
+//    private FeedbackObj feedbackObj;
+//    private DashboardFragment liveDashboardFragment;
+    private GlobalContext globalContext;
 
-    public CloudConnection(FeedbackObj feedbackObj, DashboardFragment f) {
-        this.feedbackObj = feedbackObj;
-        liveDashboardFragment = f;
+    public CloudConnection(GlobalContext globalContext) {
+//    public CloudConnection(FeedbackObj feedbackObj, DashboardFragment f) {
+//        this.feedbackObj = feedbackObj;
+//        liveDashboardFragment = f;
+        this.globalContext = globalContext;
     }
 
     @Override
-    protected Integer doInBackground(GlobalContext... params) {
+    protected Integer doInBackground(FeedbackObj... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        GlobalContext globalContext = params[0];
+//        GlobalContext globalContext = params[0];
+        FeedbackObj feedbackObj = params[0];
         AppDatabase db = globalContext.getDb();
 
         //insert in local db, then send to server
@@ -125,12 +130,16 @@ public class CloudConnection extends AsyncTask<GlobalContext, Void, Integer> {
 
         //update view and global context on remaining entries
         int  numEntries = globalContext.getDb().feedbackObjDao().countFeedbackObj();
-        globalContext.setNumLocalDbFeedbacks(numEntries);
         return numEntries;
     }
 
     @Override
     protected void onPostExecute(Integer n) {
-        liveDashboardFragment.setNumEntriesLocal(n);
+        globalContext.setNumLocalDbFeedbacks(n);
+        globalContext.getLiveDashboardFragment().setNumEntriesLocal(n);
+        if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING) {
+            boolean enable = (n == 0)?true:false;
+            globalContext.getLiveDashboardFragment().setEndTripButtonEnabled(enable);
+        }
     }
 }

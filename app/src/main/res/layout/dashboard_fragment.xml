@@ -44,6 +44,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/completedFeedbackTextView"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
@@ -68,6 +69,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/pendingFeedbackTextView"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"

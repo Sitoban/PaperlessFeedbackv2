@@ -3,6 +3,8 @@ package obhs.com.paperlessfeedback.Beans;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +25,9 @@ public class Feedback {
     };
 
     //NON_AC - Passenger
-    final static String[] feedbackQuestionsType2 = new String[] { "Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
-            "Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
-            "Collection of garbage from the coach compartments and clearance of dustbins."
+    final static String[] feedbackQuestionsType2 = new String[] { "Cleaning of Toilets, Wash Basin and other fittings",
+            "Complete Cleaning of Passenger Compartment",
+            "Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
     };
 
     //AC - TTE
@@ -37,11 +39,9 @@ public class Feedback {
     };
 
     //NON_AC -TTE
-    final static String[] feedbackQuestionsType4 = new String[] { "Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
-            "Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
-            "Collection of garbage from the coach compartments and clearance of dustbins.",
-            "Spraying of Mosquito/Cockroach/Fly Repellent and Providing Glue Board whenever required or on demand by passengers.",
-            "Behaviour/Response of Janitors/Supervisor (Including hygiene & cleanliness of Janitor/Supervisor)"
+    final static String[] feedbackQuestionsType4 = new String[] { "Cleaning of Toilets, Wash Basin and other fittings",
+            "Complete Cleaning of Passenger Compartment",
+            "Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
     };
 
     public enum FeedbackType implements Serializable{
@@ -130,10 +130,15 @@ public class Feedback {
                 break;
         }
         score += feedbackPoint;
+        //fixing 1.6 + 0.8 = 2.4000000000004 issue
+        //edit: confirm usage of RoundingMode.HALF_UP
+        score = BigDecimal.valueOf(score)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public void calculatePsi() {
-        psi = (score/5) * 100;
+        psi = (score/currentFeedbackQuestions.length) * 100;
     }
 
     public double getPsi() {

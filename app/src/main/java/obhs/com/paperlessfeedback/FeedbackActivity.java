@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.Beans.Passenger;
@@ -19,6 +20,7 @@ import obhs.com.paperlessfeedback.FeedbackFragments.PassengerVeificationFragment
 
 public class FeedbackActivity extends AppCompatActivity {
 
+    //edit: currentCoach is redundant, take from global context
     private Coach currentCoach;
     private int currentSeatNumber;
     private Feedback.FeedbackType currentFeedBackType;
@@ -33,8 +35,11 @@ public class FeedbackActivity extends AppCompatActivity {
     }
 
     public void init() {
+        final GlobalContext globalContext = (GlobalContext) this.getApplicationContext();
+
         //get intent data
-        currentCoach = (Coach) getIntent().getSerializableExtra("coach");
+//        currentCoach = (Coach) getIntent().getSerializableExtra("coach");
+        currentCoach = globalContext.getCurrentLiveCoach();
 //        liveDashboardFragment = (DashboardFragment) getIntent().getSerializableExtra("dashboard");
 //        Log.d("debugTag", "this Fragment indent pull: " + liveDashboardFragment);
         currentSeatNumber =  getIntent().getIntExtra("seatNumber", 0);

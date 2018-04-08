@@ -13,17 +13,18 @@ import obhs.com.paperlessfeedback.Util.Util;
  * Created by mannis on 31-Mar-18.
  */
 
-public class Coach implements Serializable {
+public class Coach {
     public enum CoachType {
         AC,
         NON_AC;
     }
-
     private String coachNumber;
     private int numberOfSeats;
     private CoachType coachType;
-    private List<Feedback> tteFeedback= new ArrayList<Feedback>();
-    private List<Feedback> pasFeedback= new ArrayList<Feedback>();
+    //    private List<Feedback> tteFeedback= new ArrayList<Feedback>();
+//    private List<Feedback> pasFeedback= new ArrayList<Feedback>();
+    private int numTteFeedback;
+    private int numPasFeedback;
     private List<Integer> randomSeatList;
 
     public String getCoachNumber() {
@@ -43,6 +44,8 @@ public class Coach implements Serializable {
         numberOfSeats = nos;
         coachType = ct;
         initRandomSeats();
+        numTteFeedback = 0;
+        numPasFeedback = 0;
     }
 
     public void initRandomSeats() {
@@ -83,11 +86,32 @@ public class Coach implements Serializable {
     }
 
     public void addFeedback(Feedback feedback) {
-        if(feedback.getFeedbackType() == Feedback.FeedbackType.TTE)
-            tteFeedback.add(feedback);
-        else if (feedback.getFeedbackType() == Feedback.FeedbackType.PASSENGER)
-            pasFeedback.add(feedback);
-        else
-            Log.e("debugTag", "wrong feedback type");
+//        if(feedback.getFeedbackType() == Feedback.FeedbackType.TTE)
+//            tteFeedback.add(feedback);
+//        else if (feedback.getFeedbackType() == Feedback.FeedbackType.PASSENGER)
+//            pasFeedback.add(feedback);
+//        else
+//            Log.e("debugTag", "wrong feedback type");
+
+        if(feedback.getFeedbackType() == Feedback.FeedbackType.TTE) {
+            numTteFeedback++;
+        }
+        else if (feedback.getFeedbackType() == Feedback.FeedbackType.PASSENGER) {
+            numPasFeedback++;
+            Log.d("debugTag", "ptr: " + this + " ,coach: " + getCoachNumber() + " , numFeed: " + getNumPasFeedback());
+        }
+    }
+
+    public void resetNumFeedbacks() {
+        numTteFeedback = 0;
+        numPasFeedback = 0;
+    }
+
+    public int getNumTteFeedback() {
+        return numTteFeedback;
+    }
+
+    public int getNumPasFeedback() {
+        return numPasFeedback;
     }
 }
