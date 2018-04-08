@@ -22,7 +22,6 @@ import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 /**
  * Created by mannis on 31-Mar-18.
  */
-
 public class AsyncTaskUtil {
 
     //task for setting up the train list

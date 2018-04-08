@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
+import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
 
 /**
@@ -53,12 +55,12 @@ public class DashboardFragment extends Fragment {
         takeFeedbackButton.setEnabled(true);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
-        AsyncTaskUtil.getSetNumDbEntries(this).execute(globalContext);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+//        AsyncTaskUtil.getSetNumDbEntries(this).execute(globalContext);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,9 +69,12 @@ public class DashboardFragment extends Fragment {
         //return inflater.inflate(R.layout.dashboard_fragment, container, false);
         View view = inflater.inflate(R.layout.dashboard_fragment, container, false);
         final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        globalContext.setLiveDashboardFragment(this);
+        AsyncTaskUtil.getSetNumDbEntries(this).execute(globalContext);
 
         Button takeFeedback = (Button) view.findViewById(R.id.takeFeedbackButton);
         final Spinner coachSelectionSpinner = view.findViewById(R.id.coachSelectionSpinner);
+        final Fragment thisFragment = this;
         takeFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +95,8 @@ public class DashboardFragment extends Fragment {
 //                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
 
                 intent.putExtra("coach", currentCoach);
+//                Log.d("debugTag", "this Fragment indent push: " + (Serializable)thisFragment);
+//                intent.putExtra("dashboard", (Serializable)thisFragment);
                 intent.putExtra("seatNumber", currentCoach.getRandomSeat());
                 //edit: pass appropriate type -- TT or passenger
                 intent.putExtra("feedbackType", Feedback.FeedbackType.PASSENGER);
@@ -109,11 +116,21 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        Button syncButton = view.findViewById(R.id.syncButton);
+        syncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new CloudConnection(null, globalContext.getLiveDashboardFragment()).execute(globalContext);
+            }
+        });
+
         return view;
     }
 
     public void setNumEntriesLocal(int n) {
         Log.d("debugTag", "setting numEntries: " + n);
+//        Log.d("debugTag", "thisFragment: " + this);
+//        Log.d("debugTag", "thisView: " + getView());
         TextView numEntriesLocalTextView = getView().findViewById(R.id.numEntriesLocal);
         numEntriesLocalTextView.setText("Sync Pending: " + n);
     }

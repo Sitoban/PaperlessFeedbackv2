@@ -8,6 +8,7 @@ import java.util.List;
 
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
+import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 
 /**
@@ -21,6 +22,8 @@ public class GlobalContext extends Application{
     private Trip currentTrip;
     private int numLocalDbFeedbacks;
     private static AppDatabase db;
+
+    private DashboardFragment liveDashboardFragment;
 
     public long getCurrentTrainIndex() {
         return currentTrainIndex;
@@ -72,6 +75,14 @@ public class GlobalContext extends Application{
 
     public void setNumLocalDbFeedbacks(int numLocalDbFeedbacks) {
         this.numLocalDbFeedbacks = numLocalDbFeedbacks;
+    }
+
+    public DashboardFragment getLiveDashboardFragment() {
+        return liveDashboardFragment;
+    }
+
+    public void setLiveDashboardFragment(DashboardFragment liveDashboardFragment) {
+        this.liveDashboardFragment = liveDashboardFragment;
     }
 
 }

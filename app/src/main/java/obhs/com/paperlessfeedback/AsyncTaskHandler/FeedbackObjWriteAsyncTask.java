@@ -33,11 +33,6 @@ public class FeedbackObjWriteAsyncTask extends AsyncTask<AppDatabase, Void, Bool
     @Override
     protected Boolean doInBackground(AppDatabase... appDatabases) {
         AppDatabase db = (AppDatabase)appDatabases[0];
-
-        int count = db.feedbackObjDao().countFeedbackObj();
-//        Log.d("debugTag", "count: " + count);
-//        db.feedbackObjDao().delAll();
-
         db.feedbackObjDao().insertAll(feedbackObj);
         return null;
     }

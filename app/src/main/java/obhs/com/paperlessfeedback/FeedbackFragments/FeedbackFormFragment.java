@@ -111,10 +111,11 @@ public class FeedbackFormFragment extends Fragment {
         feedbackObj.setPsi(String.valueOf(feedbackActivity.getCurrentFeedback().getPsi()));
 
 //        feedbackObj.setTrainNumber(String.valueOf(globalContext.getCurrentTrip().getTrain().getTrainNumber()));
-        new CloudConnection().execute(feedbackObj);
-        AsyncTaskUtil.getFeedbackObjWriteAsyncTask(feedbackObj).execute(globalContext.getDb());
+        //write feebdackObj to local db
+//        AsyncTaskUtil.getFeedbackObjWriteAsyncTask(feedbackObj).execute(globalContext.getDb());
+        //write to local db and server
+        new CloudConnection(feedbackObj, globalContext.getLiveDashboardFragment()).execute(globalContext);
 
-        //edit: delete below
-        AsyncTaskUtil.getDatabaseReadAsyncTask().execute(globalContext.getDb());
+//        AsyncTaskUtil.getDatabaseReadAsyncTask().execute(globalContext.getDb());
     }
 }

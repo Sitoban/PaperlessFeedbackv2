@@ -65,7 +65,7 @@ public class Coach implements Serializable {
 
     //get a random seat number and delete it for later
     public int getRandomSeat() {
-        printSeats();
+//        printSeats();
         if(randomSeatList.size()== 0)
             return 0;
         int size = randomSeatList.size();

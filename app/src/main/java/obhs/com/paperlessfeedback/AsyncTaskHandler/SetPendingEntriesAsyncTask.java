@@ -24,6 +24,7 @@ import static obhs.com.paperlessfeedback.Util.Util.setupCustomTrain;
  * Created by mannis on 31-Mar-18.
  */
 
+//edit: delete this task if possible, look into usages
 public class SetPendingEntriesAsyncTask extends AsyncTask<GlobalContext, Void, Integer> {
     private Fragment fragment;
 
