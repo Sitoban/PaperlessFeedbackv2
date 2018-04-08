@@ -59,12 +59,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
-        TextView completedFeedbackTextView = getView().findViewById(R.id.completedFeedbackTextView);
-        TextView pendingFeedbackTextView = getView().findViewById(R.id.pendingFeedbackTextView);
-
-        completedFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumCompletedFeedbacks()));
-        pendingFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumPendingFeedbacks()));
+        updatePendingCompleted();
     }
 
     @Override
@@ -123,6 +118,7 @@ public class DashboardFragment extends Fragment {
                     globalContext.getCurrentTrain().resetCoachNumFeedbacks();
                     globalContext.getCurrentTrip().setNextTripState();
                     endTripButton.setText("End Trip");
+                    updatePendingCompleted();
                 }
                 else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
                     //edit: end trip here and go back to home home page
@@ -155,5 +151,15 @@ public class DashboardFragment extends Fragment {
     public void setEndTripButtonEnabled(Boolean enable) {
         Button endTripButton = getView().findViewById(R.id.endTripButton);
         endTripButton.setEnabled(enable);
+    }
+
+    public void updatePendingCompleted() {
+
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        TextView completedFeedbackTextView = getView().findViewById(R.id.completedFeedbackTextView);
+        TextView pendingFeedbackTextView = getView().findViewById(R.id.pendingFeedbackTextView);
+
+        completedFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumCompletedFeedbacks()));
+        pendingFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumPendingFeedbacks()));
     }
 }
