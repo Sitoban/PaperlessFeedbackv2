@@ -8,6 +8,7 @@ import java.util.List;
 
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
+import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 
 /**
@@ -19,15 +20,16 @@ public class GlobalContext extends Application{
     private View mainDashboardView;
     private long currentTrainIndex;
     private Trip currentTrip;
+    private int numLocalDbFeedbacks;
     private static AppDatabase db;
+
+    private DashboardFragment liveDashboardFragment;
 
     public long getCurrentTrainIndex() {
         return currentTrainIndex;
     }
 
-    public void setCurrentTrainIndex(long currentTrainIndex) {
-        this.currentTrainIndex = currentTrainIndex;
-    }
+    public void setCurrentTrainIndex(long currentTrainIndex) { this.currentTrainIndex = currentTrainIndex; }
 
     public Train getCurrentTrain() {
         return trainsList.get((int)currentTrainIndex);
@@ -51,9 +53,7 @@ public class GlobalContext extends Application{
         trainsList.add(t);
     }
 
-    public void setMainDashboardView(View v) {
-        mainDashboardView = v;
-    }
+    public void setMainDashboardView(View v) { mainDashboardView = v; }
 
     public View getMainDashboardView() {
         return mainDashboardView;
@@ -63,12 +63,26 @@ public class GlobalContext extends Application{
 //        this.listOfTrains = listOfTrains;
 //    }
 
-    public AppDatabase getDb() {
-        return db;
-    }
+    public AppDatabase getDb() { return db; }
 
     public void setDb(AppDatabase db) {
         GlobalContext.db = db;
+    }
+
+    public int getNumLocalDbFeedbacks() {
+        return numLocalDbFeedbacks;
+    }
+
+    public void setNumLocalDbFeedbacks(int numLocalDbFeedbacks) {
+        this.numLocalDbFeedbacks = numLocalDbFeedbacks;
+    }
+
+    public DashboardFragment getLiveDashboardFragment() {
+        return liveDashboardFragment;
+    }
+
+    public void setLiveDashboardFragment(DashboardFragment liveDashboardFragment) {
+        this.liveDashboardFragment = liveDashboardFragment;
     }
 
 }

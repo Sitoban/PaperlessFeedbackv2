@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
@@ -27,9 +28,10 @@ public class CameraHelper {
     private Camera camera;
     private int cameraId = 0;
     FeedbackObj feedbackObj;
-
-    public CameraHelper(FeedbackObj feedbackObj)
+    GlobalContext globalContext;
+    public CameraHelper(FeedbackObj feedbackObj,GlobalContext globalContext)
     {
+        this.globalContext = globalContext;
         this.feedbackObj = feedbackObj;
     }
 
@@ -80,7 +82,7 @@ public class CameraHelper {
             //display.setImageBitmap(bitmapPicture);
             Log.v("CameraHelper", "Bitmap Captured");
             feedbackObj.setFaceImage(image);
-            new CloudConnection().execute(feedbackObj);
+            new CloudConnection(feedbackObj,globalContext.getLiveDashboardFragment()).execute(globalContext);
             releaseCamera();
         }
     };

@@ -17,7 +17,19 @@ import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    @Override
+    public void onBackPressed() {
+        //disabling back button
+    }
+
     Button secondFragment;
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Log.d("debugTag", "resuming activity");
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

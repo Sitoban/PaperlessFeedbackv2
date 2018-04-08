@@ -36,9 +36,4 @@ public class Train {
         coachList = cl;
     }
 
-//    //edit: delete
-//    public Train() {
-//
-//    }
-
 }

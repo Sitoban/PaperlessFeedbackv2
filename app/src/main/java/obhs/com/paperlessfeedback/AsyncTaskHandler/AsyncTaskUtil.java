@@ -1,5 +1,6 @@
 package obhs.com.paperlessfeedback.AsyncTaskHandler;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -21,7 +22,6 @@ import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 /**
  * Created by mannis on 31-Mar-18.
  */
-
 public class AsyncTaskUtil {
 
     //task for setting up the train list
@@ -42,14 +42,16 @@ public class AsyncTaskUtil {
             protected Boolean doInBackground(AppDatabase... appDatabases) {
                 AppDatabase db = appDatabases[0];
                 List<FeedbackObj> feedbackObjs = db.feedbackObjDao().getAll();
-                ////////edit: delete
-                Log.d("debugTag", "printFeedbackList");
-                for(FeedbackObj feedbackObj: feedbackObjs) {
-                    Log.d("debugTag", "tripId: "  + feedbackObj.getTripId() + "seat number: " + feedbackObj.getSeatNumber());
-                }
-                //////////edit: delete above
+//                Log.d("debugTag", "printFeedbackList");
+//                for(FeedbackObj feedbackObj: feedbackObjs) {
+//                    Log.d("debugTag", "tripId: "  + feedbackObj.getTripId() + "seat number: " + feedbackObj.getSeatNumber());
+//                }
                 return null;
             }
         };
+    }
+
+    public static AsyncTask<GlobalContext, Void, Integer> getSetNumDbEntries(Fragment fragment) {
+        return new SetPendingEntriesAsyncTask(fragment);
     }
 }

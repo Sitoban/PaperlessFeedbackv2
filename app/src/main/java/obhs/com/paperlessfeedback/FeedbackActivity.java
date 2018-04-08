@@ -13,6 +13,7 @@ import android.widget.Toast;
 import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.Beans.Passenger;
+import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.FeedbackFragments.PassengerVeificationFragment;
 
 
@@ -22,8 +23,9 @@ public class FeedbackActivity extends AppCompatActivity {
     private int currentSeatNumber;
     private Feedback.FeedbackType currentFeedBackType;
     private Passenger currentPassenger;
-
     private Feedback currentFeedback;
+
+//    private DashboardFragment liveDashboardFragment;
 
     @Override
     public void onBackPressed() {
@@ -33,10 +35,13 @@ public class FeedbackActivity extends AppCompatActivity {
     public void init() {
         //get intent data
         currentCoach = (Coach) getIntent().getSerializableExtra("coach");
+//        liveDashboardFragment = (DashboardFragment) getIntent().getSerializableExtra("dashboard");
+//        Log.d("debugTag", "this Fragment indent pull: " + liveDashboardFragment);
         currentSeatNumber =  getIntent().getIntExtra("seatNumber", 0);
         if(currentSeatNumber <= 0)
             Log.e("debugTag","seat number invalid");
         currentFeedBackType =  (Feedback.FeedbackType)getIntent().getSerializableExtra("feedbackType");
+
 //        Toast.makeText(this , "currentFBType: " + currentFeedBackType, Toast.LENGTH_SHORT).show();
     }
 
@@ -75,4 +80,8 @@ public class FeedbackActivity extends AppCompatActivity {
     public Feedback getCurrentFeedback() { return currentFeedback; }
 
     public void setCurrentFeedback(Feedback currentFeedback) { this.currentFeedback = currentFeedback; }
+
+//    public DashboardFragment getLiveDashboardFragment() {
+//        return liveDashboardFragment;
+//    }
 }
