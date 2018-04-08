@@ -42,7 +42,7 @@ public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalCo
 
     @Override
     protected void onPostExecute(GlobalContext globalContext) {
-        Log.d("DebugTag", "size after setup: " + globalContext.getListOfTrains().size());
+//        Log.d("DebugTag", "size after setup: " + globalContext.getListOfTrains().size());
         //pupulate spinner
         View mainDashboardView = globalContext.getMainDashboardView();
         Spinner selectTrainSpinner = mainDashboardView.findViewById(R.id.selectTrainDropDown);

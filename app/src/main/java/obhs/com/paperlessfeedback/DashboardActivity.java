@@ -74,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void setupTrainList() {
         final GlobalContext globalContext = (GlobalContext) getApplicationContext();
-        Log.d("DebugTag", "initial size: " + globalContext.getListOfTrains().size());
+//        Log.d("DebugTag", "initial size: " + globalContext.getListOfTrains().size());
         AsyncTaskUtil.getContextualAsyncTask(this).execute(globalContext);
     }
 
