@@ -24,7 +24,7 @@
                 android:id="@+id/radioExcellent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="19dp"
+                android:textSize="16dp"
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
                 android:text="Excellent" />
@@ -33,7 +33,7 @@
                 android:id="@+id/radioVeryGood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="19dp"
+                android:textSize="16dp"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
@@ -43,7 +43,7 @@
                 android:id="@+id/radioGood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="19dp"
+                android:textSize="16dp"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
@@ -54,7 +54,7 @@
                 android:id="@+id/radioVeryAverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="19dp"
+                android:textSize="16dp"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
@@ -64,7 +64,7 @@
                 android:id="@+id/radioPoor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="19dp"
+                android:textSize="16dp"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
