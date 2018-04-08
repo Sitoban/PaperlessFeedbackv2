@@ -18,6 +18,7 @@ import android.widget.Toast;
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.Beans.Feedback;
+import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
@@ -110,6 +111,7 @@ public class FeedbackFormFragment extends Fragment {
         feedbackObj.setCoachNumber(feedbackActivity.getCurrentCoach().getCoachNumber());
         feedbackObj.setSeatNumber(String.valueOf(feedbackActivity.getCurrentSeatNumber()));
         feedbackObj.setPsi(String.valueOf(feedbackActivity.getCurrentFeedback().getPsi()));
+        feedbackObj.setTripDirection((globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING)?0:1);
 
 //        feedbackObj.setTrainNumber(String.valueOf(globalContext.getCurrentTrip().getTrain().getTrainNumber()));
 

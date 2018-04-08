@@ -87,7 +87,7 @@ public class CameraHelper {
             image.compress(Bitmap.CompressFormat.JPEG, 60, baos);
             byte[] imageByteArray = baos.toByteArray();
             feedbackObj.setFaceImage(imageByteArray);
-            new CloudConnection(feedbackObj,globalContext.getLiveDashboardFragment()).execute(globalContext);
+            new CloudConnection(globalContext).execute(feedbackObj);
             releaseCamera();
         }
     };

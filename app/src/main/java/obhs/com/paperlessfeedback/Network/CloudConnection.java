@@ -27,21 +27,25 @@ import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
  * Created by 1018651 on 04/03/2018.
  */
 
-public class CloudConnection extends AsyncTask<GlobalContext, Void, Integer> {
+public class CloudConnection extends AsyncTask<FeedbackObj, Void, Integer> {
 
-    private FeedbackObj feedbackObj;
-    private DashboardFragment liveDashboardFragment;
+//    private FeedbackObj feedbackObj;
+//    private DashboardFragment liveDashboardFragment;
+    private GlobalContext globalContext;
 
-    public CloudConnection(FeedbackObj feedbackObj, DashboardFragment f) {
-        this.feedbackObj = feedbackObj;
-        liveDashboardFragment = f;
+    public CloudConnection(GlobalContext globalContext) {
+//    public CloudConnection(FeedbackObj feedbackObj, DashboardFragment f) {
+//        this.feedbackObj = feedbackObj;
+//        liveDashboardFragment = f;
+        this.globalContext = globalContext;
     }
 
     @Override
-    protected Integer doInBackground(GlobalContext... params) {
+    protected Integer doInBackground(FeedbackObj... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        GlobalContext globalContext = params[0];
+//        GlobalContext globalContext = params[0];
+        FeedbackObj feedbackObj = params[0];
         AppDatabase db = globalContext.getDb();
 
         //insert in local db, then send to server
@@ -131,6 +135,7 @@ public class CloudConnection extends AsyncTask<GlobalContext, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer n) {
-        liveDashboardFragment.setNumEntriesLocal(n);
+        globalContext.getLiveDashboardFragment().setNumEntriesLocal(n);
+        
     }
 }

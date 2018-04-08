@@ -31,6 +31,7 @@ import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -106,13 +107,17 @@ public class DashboardFragment extends Fragment {
 
         setupCoachSpinner(view);
 
-        Button endTripButton = view.findViewById(R.id.endTripButton);
+        final Button endTripButton = view.findViewById(R.id.endTripButton);
         endTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING) {
+                    endTripButton.setEnabled(false);
+                }
                 globalContext.getCurrentTrip().setNextTripState();
                 Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
                         Toast.LENGTH_LONG).show();
+//                globalContext.getCurrentTrain().resetCoachNumFeedbacks();
             }
         });
 
@@ -120,7 +125,8 @@ public class DashboardFragment extends Fragment {
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new CloudConnection(null, globalContext.getLiveDashboardFragment()).execute(globalContext);
+                FeedbackObj nullFeedbackObj = null;
+                new CloudConnection(globalContext).execute(nullFeedbackObj);
             }
         });
 
@@ -133,5 +139,10 @@ public class DashboardFragment extends Fragment {
 //        Log.d("debugTag", "thisView: " + getView());
         TextView numEntriesLocalTextView = getView().findViewById(R.id.numEntriesLocal);
         numEntriesLocalTextView.setText("Sync Pending: " + n);
+    }
+
+    public void setEndTripButtonEnabled(Boolean enable) {
+        Button endTripButton = getView().findViewById(R.id.endTripButton);
+        endTripButton.setEnabled(enable);
     }
 }

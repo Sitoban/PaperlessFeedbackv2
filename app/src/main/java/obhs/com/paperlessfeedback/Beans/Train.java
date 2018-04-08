@@ -36,4 +36,10 @@ public class Train {
         coachList = cl;
     }
 
+    public void resetCoachNumFeedbacks() {
+        for(Coach coach: getCoachList()) {
+            coach.resetNumFeedbacks();
+        }
+    }
+
 }

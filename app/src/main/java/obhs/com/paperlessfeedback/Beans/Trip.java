@@ -44,9 +44,9 @@ public class Trip {
                 tripStatus = TripStatus.ARRIVING;
                 break;
             case ARRIVING:
-                tripStatus = TripStatus.END;
-                break;
-            case END:
+//                tripStatus = TripStatus.END;
+//                break;
+//            case END:
                 Log.e("debugTag","Unexpected code execution");
                    break;
         }
