@@ -25,9 +25,9 @@ public class Feedback {
     };
 
     //NON_AC - Passenger
-    final static String[] feedbackQuestionsType2 = new String[] { "Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
-            "Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
-            "Collection of garbage from the coach compartments and clearance of dustbins."
+    final static String[] feedbackQuestionsType2 = new String[] { "Cleaning of Toilets, Wash Basin and other fittings",
+            "Complete Cleaning of Passenger Compartment",
+            "Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
     };
 
     //AC - TTE
@@ -39,11 +39,9 @@ public class Feedback {
     };
 
     //NON_AC -TTE
-    final static String[] feedbackQuestionsType4 = new String[] { "Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
-            "Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
-            "Collection of garbage from the coach compartments and clearance of dustbins.",
-            "Spraying of Mosquito/Cockroach/Fly Repellent and Providing Glue Board whenever required or on demand by passengers.",
-            "Behaviour/Response of Janitors/Supervisor (Including hygiene & cleanliness of Janitor/Supervisor)"
+    final static String[] feedbackQuestionsType4 = new String[] { "Cleaning of Toilets, Wash Basin and other fittings",
+            "Complete Cleaning of Passenger Compartment",
+            "Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
     };
 
     public enum FeedbackType implements Serializable{
