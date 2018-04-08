@@ -3,6 +3,8 @@ package obhs.com.paperlessfeedback.Beans;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,10 +132,15 @@ public class Feedback {
                 break;
         }
         score += feedbackPoint;
+        //fixing 1.6 + 0.8 = 2.4000000000004 issue
+        //edit: confirm usage of RoundingMode.HALF_UP
+        score = BigDecimal.valueOf(score)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public void calculatePsi() {
-        psi = (score/5) * 100;
+        psi = (score/currentFeedbackQuestions.length) * 100;
     }
 
     public double getPsi() {
