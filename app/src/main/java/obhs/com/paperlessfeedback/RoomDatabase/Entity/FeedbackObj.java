@@ -40,8 +40,8 @@ public class FeedbackObj {
     @ColumnInfo(name = "psi")
     private String psi;
 
-    @Ignore
-    private Bitmap faceImage;
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] faceImage;
 
     public void setFid(int fid) {
         this.fid = fid;
@@ -115,10 +115,18 @@ public class FeedbackObj {
         this.psi = psi;
     }
 
-    public Bitmap getFaceImage()  {
-        return this.faceImage;
+//    public Bitmap getFaceImage()  {
+//        return this.faceImage;
+//    }
+//    public void setFaceImage(Bitmap image) {this.faceImage = image;}
+
+    public byte[] getFaceImage() {
+        return faceImage;
     }
-    public void setFaceImage(Bitmap image) {this.faceImage = image;}
+
+    public void setFaceImage(byte[] faceImage) {
+        this.faceImage = faceImage;
+    }
 
     public String getQueryString()
     {

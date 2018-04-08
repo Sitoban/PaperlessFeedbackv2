@@ -75,10 +75,11 @@ public class CloudConnection extends AsyncTask<GlobalContext, Void, Integer> {
                 OutputStream os = connection.getOutputStream();
 
                 ///Adding Image
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap faceImage =  currentFeedbackObj.getFaceImage();
-                faceImage.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                byte[] byteArray = baos.toByteArray();
+//                Bitmap faceImage =  currentFeedbackObj.getFaceImage();
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                faceImage.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+//                byte[] byteArray = baos.toByteArray();
+                byte[] byteArray = currentFeedbackObj.getFaceImage();
                 String encoded = Base64.encodeToString(byteArray, Base64.URL_SAFE);
 
                 String queryString = currentFeedbackObj.getQueryString() +"&photo="+ encoded;

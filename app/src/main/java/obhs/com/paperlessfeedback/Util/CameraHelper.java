@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
@@ -81,7 +82,11 @@ public class CameraHelper {
             Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
             //display.setImageBitmap(bitmapPicture);
             Log.v("CameraHelper", "Bitmap Captured");
-            feedbackObj.setFaceImage(image);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+            byte[] imageByteArray = baos.toByteArray();
+            feedbackObj.setFaceImage(imageByteArray);
             new CloudConnection(feedbackObj,globalContext.getLiveDashboardFragment()).execute(globalContext);
             releaseCamera();
         }
