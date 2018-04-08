@@ -2,7 +2,9 @@ package obhs.com.paperlessfeedback.RoomDatabase.Entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.Bitmap;
 
 /**
  * Created by mannis on 02-Apr-18.
@@ -37,6 +39,9 @@ public class FeedbackObj {
 
     @ColumnInfo(name = "psi")
     private String psi;
+
+    @Ignore
+    private Bitmap faceImage;
 
     public void setFid(int fid) {
         this.fid = fid;
@@ -109,6 +114,11 @@ public class FeedbackObj {
     public void setPsi(String psi) {
         this.psi = psi;
     }
+
+    public Bitmap getFaceImage()  {
+        return this.faceImage;
+    }
+    public void setFaceImage(Bitmap image) {this.faceImage = image;}
 
     public String getQueryString()
     {

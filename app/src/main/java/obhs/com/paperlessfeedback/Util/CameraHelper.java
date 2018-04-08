@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -24,6 +26,13 @@ import static android.content.Context.MODE_PRIVATE;
 public class CameraHelper {
     private Camera camera;
     private int cameraId = 0;
+    FeedbackObj feedbackObj;
+
+    public CameraHelper(FeedbackObj feedbackObj)
+    {
+        this.feedbackObj = feedbackObj;
+    }
+
     public void ShootFace(Context context)
     {
         if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
@@ -67,9 +76,12 @@ public class CameraHelper {
         public void onPictureTaken(byte[] data, Camera camera) {
             //decode the data obtained by the camera into a Bitmap
             //display.setImageBitmap(photo);
-            //image = BitmapFactory.decodeByteArray(data, 0, data.length);
+            Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
             //display.setImageBitmap(bitmapPicture);
             Log.v("CameraHelper", "Bitmap Captured");
+            feedbackObj.setFaceImage(image);
+            new CloudConnection().execute(feedbackObj);
+            releaseCamera();
         }
     };
     private int findFrontFacingCamera() {

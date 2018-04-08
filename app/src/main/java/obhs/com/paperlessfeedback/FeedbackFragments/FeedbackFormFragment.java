@@ -22,6 +22,7 @@ import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
+import obhs.com.paperlessfeedback.Util.CameraHelper;
 import obhs.com.paperlessfeedback.Util.Util;
 
 import static obhs.com.paperlessfeedback.Util.Util.getCheckedRadioButtonText;
@@ -111,7 +112,10 @@ public class FeedbackFormFragment extends Fragment {
         feedbackObj.setPsi(String.valueOf(feedbackActivity.getCurrentFeedback().getPsi()));
 
 //        feedbackObj.setTrainNumber(String.valueOf(globalContext.getCurrentTrip().getTrain().getTrainNumber()));
-        new CloudConnection().execute(feedbackObj);
+        new CameraHelper(feedbackObj).ShootFace(getActivity());
+        //new CloudConnection().execute(feedbackObj);
+
+
         AsyncTaskUtil.getFeedbackObjWriteAsyncTask(feedbackObj).execute(globalContext.getDb());
 
         //edit: delete below
