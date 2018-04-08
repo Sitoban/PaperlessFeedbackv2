@@ -6,6 +6,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
@@ -20,6 +21,7 @@ public class GlobalContext extends Application{
     private View mainDashboardView;
     private long currentTrainIndex;
     private Trip currentTrip;
+    private Coach currentLiveCoach;
     private int numLocalDbFeedbacks;
     private static AppDatabase db;
 
@@ -83,6 +85,14 @@ public class GlobalContext extends Application{
 
     public void setLiveDashboardFragment(DashboardFragment liveDashboardFragment) {
         this.liveDashboardFragment = liveDashboardFragment;
+    }
+
+    public Coach getCurrentLiveCoach() {
+        return currentLiveCoach;
+    }
+
+    public void setCurrentLiveCoach(Coach currentLiveCoach) {
+        this.currentLiveCoach = currentLiveCoach;
     }
 
 }

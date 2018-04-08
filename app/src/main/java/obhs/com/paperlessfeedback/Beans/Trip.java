@@ -67,4 +67,21 @@ public class Trip {
     public Date getStartTime() {
         return startTime;
     }
+
+    public int getNumCompletedFeedbacks() {
+        //edit: make change for tte support
+//        int numTotal = getTrain().getNumRequiredFeedbacks();
+        int numCompleted = 0;
+        for(Coach coach:getTrain().getCoachList()) {
+//            Log.d("debugTag", "numFeed " + coach.getCoachNumber() + ": " + coach.getNumPasFeedback());
+            numCompleted += coach.getNumPasFeedback();
+        }
+        return numCompleted;
+    }
+
+    public int getNumPendingFeedbacks() {
+        int numTotal = getTrain().getNumRequiredFeedbacks();
+        int numPending = numTotal -  getNumCompletedFeedbacks();
+        return numPending;
+    }
 }

@@ -13,16 +13,15 @@ import obhs.com.paperlessfeedback.Util.Util;
  * Created by mannis on 31-Mar-18.
  */
 
-public class Coach implements Serializable {
+public class Coach {
     public enum CoachType {
         AC,
         NON_AC;
     }
-
     private String coachNumber;
     private int numberOfSeats;
     private CoachType coachType;
-//    private List<Feedback> tteFeedback= new ArrayList<Feedback>();
+    //    private List<Feedback> tteFeedback= new ArrayList<Feedback>();
 //    private List<Feedback> pasFeedback= new ArrayList<Feedback>();
     private int numTteFeedback;
     private int numPasFeedback;
@@ -99,11 +98,20 @@ public class Coach implements Serializable {
         }
         else if (feedback.getFeedbackType() == Feedback.FeedbackType.PASSENGER) {
             numPasFeedback++;
+            Log.d("debugTag", "ptr: " + this + " ,coach: " + getCoachNumber() + " , numFeed: " + getNumPasFeedback());
         }
     }
 
     public void resetNumFeedbacks() {
         numTteFeedback = 0;
         numPasFeedback = 0;
+    }
+
+    public int getNumTteFeedback() {
+        return numTteFeedback;
+    }
+
+    public int getNumPasFeedback() {
+        return numPasFeedback;
     }
 }

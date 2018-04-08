@@ -56,12 +56,16 @@ public class DashboardFragment extends Fragment {
         takeFeedbackButton.setEnabled(true);
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
-//        AsyncTaskUtil.getSetNumDbEntries(this).execute(globalContext);
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        TextView completedFeedbackTextView = getView().findViewById(R.id.completedFeedbackTextView);
+        TextView pendingFeedbackTextView = getView().findViewById(R.id.pendingFeedbackTextView);
+
+        completedFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumCompletedFeedbacks()));
+        pendingFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumPendingFeedbacks()));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +99,8 @@ public class DashboardFragment extends Fragment {
                 //adding coach info to new acitivity
 //                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
 
-                intent.putExtra("coach", currentCoach);
+//                intent.putExtra("coach", currentCoach);
+                globalContext.setCurrentLiveCoach(currentCoach);
 //                Log.d("debugTag", "this Fragment indent push: " + (Serializable)thisFragment);
 //                intent.putExtra("dashboard", (Serializable)thisFragment);
                 intent.putExtra("seatNumber", currentCoach.getRandomSeat());
@@ -112,12 +117,18 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING) {
-                    endTripButton.setEnabled(false);
+                    //edit: test that if number of pending sync > 0, then end trip is disabled
+                    boolean enable = (globalContext.getNumLocalDbFeedbacks() == 0)?true:false;
+                    endTripButton.setEnabled(enable);
+                    globalContext.getCurrentTrain().resetCoachNumFeedbacks();
+                    globalContext.getCurrentTrip().setNextTripState();
+                    endTripButton.setText("End Trip");
                 }
-                globalContext.getCurrentTrip().setNextTripState();
+                else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
+                    //edit: end trip here and go back to home home page
+                }
                 Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
                         Toast.LENGTH_LONG).show();
-//                globalContext.getCurrentTrain().resetCoachNumFeedbacks();
             }
         });
 
