@@ -139,6 +139,9 @@ public class Feedback {
 
     public void calculatePsi() {
         psi = (score/currentFeedbackQuestions.length) * 100;
+        psi = BigDecimal.valueOf(psi)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public double getPsi() {

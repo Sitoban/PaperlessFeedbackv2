@@ -5,6 +5,8 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static obhs.com.paperlessfeedback.Beans.Trip.TripStatus.GOING;
+
 /**
  * Created by mannis on 31-Mar-18.
  */
@@ -13,8 +15,8 @@ public class Trip {
 
     public enum TripStatus {
         GOING,
-        ARRIVING,
-        END
+        ARRIVING
+//        END
     }
 
     private long tripId;
@@ -25,6 +27,19 @@ public class Trip {
 
     private TripStatus tripStatus;
 
+    public int getTripStatusIntVal() {
+        int result = -1;
+        switch (tripStatus) {
+            case GOING:
+                result = 0;
+                break;
+            case ARRIVING:
+                result = 1;
+                break;
+        }
+        return result;
+    }
+
     private void createTripId() {
         String tripIdString = new SimpleDateFormat("yyyyMMdd").format(startTime) + train.getTrainNumber();
         tripId = Long.parseLong(tripIdString);
@@ -34,7 +49,7 @@ public class Trip {
     public Trip(Train t) {
         train = t;
         startTime = new Date();
-        tripStatus = TripStatus.GOING;
+        tripStatus = GOING;
         createTripId();
     }
 

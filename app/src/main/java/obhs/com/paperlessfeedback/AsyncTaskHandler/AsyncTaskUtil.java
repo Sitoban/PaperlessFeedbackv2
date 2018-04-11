@@ -26,8 +26,8 @@ public class AsyncTaskUtil {
 
     //task for setting up the train list
 //    static public AsyncTask<GlobalContext, Void, GlobalContext> getContextualAsyncTask() {
-    public static ContextualAsyncTask getContextualAsyncTask(Context context) {
-        return new ContextualAsyncTask(context);
+    public static ContextualAsyncTask getContextualAsyncTask(Context context, View view) {
+        return new ContextualAsyncTask(context, view);
     }
 
     public static FeedbackObjWriteAsyncTask getFeedbackObjWriteAsyncTask(FeedbackObj feedbackObj) {

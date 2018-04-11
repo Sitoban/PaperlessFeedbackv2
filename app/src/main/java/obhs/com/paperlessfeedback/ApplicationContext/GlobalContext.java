@@ -10,6 +10,7 @@ import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
+import obhs.com.paperlessfeedback.DashboardFragments.TrainSelectionFragment;
 import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 
 /**
@@ -18,14 +19,14 @@ import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 
 public class GlobalContext extends Application{
     private List<Train> trainsList = new ArrayList<Train>();
-    private View mainDashboardView;
+//    private View mainDashboardView;
     private long currentTrainIndex;
     private Trip currentTrip;
     private Coach currentLiveCoach;
     private int numLocalDbFeedbacks;
     private static AppDatabase db;
-
     private DashboardFragment liveDashboardFragment;
+    private TrainSelectionFragment liveTrainSelectionFragment;
 
     public long getCurrentTrainIndex() {
         return currentTrainIndex;
@@ -55,11 +56,11 @@ public class GlobalContext extends Application{
         trainsList.add(t);
     }
 
-    public void setMainDashboardView(View v) { mainDashboardView = v; }
-
-    public View getMainDashboardView() {
-        return mainDashboardView;
-    }
+//    public void setMainDashboardView(View v) { mainDashboardView = v; }
+//
+//    public View getMainDashboardView() {
+//        return mainDashboardView;
+//    }
 
 //    public void setListOfTrains(List<Train> listOfTrains) {
 //        this.listOfTrains = listOfTrains;
@@ -95,4 +96,11 @@ public class GlobalContext extends Application{
         this.currentLiveCoach = currentLiveCoach;
     }
 
+    public TrainSelectionFragment getLiveTrainSelectionFragment() {
+        return liveTrainSelectionFragment;
+    }
+
+    public void setLiveTrainSelectionFragment(TrainSelectionFragment liveTrainSelectionFragment) {
+        this.liveTrainSelectionFragment = liveTrainSelectionFragment;
+    }
 }

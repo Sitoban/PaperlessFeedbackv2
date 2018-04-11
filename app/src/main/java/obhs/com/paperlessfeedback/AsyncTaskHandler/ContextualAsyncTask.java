@@ -16,6 +16,7 @@ import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.R;
 
+import static obhs.com.paperlessfeedback.Util.Util.logd;
 import static obhs.com.paperlessfeedback.Util.Util.setupCustomTrain;
 
 /**
@@ -24,9 +25,11 @@ import static obhs.com.paperlessfeedback.Util.Util.setupCustomTrain;
 
 public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalContext> {
     private Context context;
+    private View fragmentView;
 
-    public ContextualAsyncTask(Context con) {
+    public ContextualAsyncTask(Context con, View view) {
         context = con;
+        fragmentView = view;
     }
     @Override
     protected GlobalContext doInBackground(GlobalContext... globalContexts) {
@@ -35,7 +38,6 @@ public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalCo
         //setting up custom train
         List<Coach> coachList = new ArrayList<Coach>();
         setupCustomTrain(coachList);
-        globalContext.addTrain(new Train("Very Nice Train",12345, 1, coachList));
         globalContext.addTrain(new Train("Shatabdi Express",94312, 1, coachList));
         return globalContext;
     }
@@ -44,8 +46,9 @@ public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalCo
     protected void onPostExecute(GlobalContext globalContext) {
 //        Log.d("DebugTag", "size after setup: " + globalContext.getListOfTrains().size());
         //pupulate spinner
-        View mainDashboardView = globalContext.getMainDashboardView();
-        Spinner selectTrainSpinner = mainDashboardView.findViewById(R.id.selectTrainDropDown);
+//        View mainDashboardView = globalContext.getMainDashboardView();
+//        Spinner selectTrainSpinner = mainDashboardView.findViewById(R.id.selectTrainDropDown);
+        Spinner selectTrainSpinner = fragmentView.findViewById(R.id.selectTrainDropDown);
 
         List<String> trainListString = new ArrayList<String>();
         for(Train train: globalContext.getListOfTrains()) {
@@ -56,7 +59,8 @@ public class ContextualAsyncTask extends AsyncTask<GlobalContext, Void, GlobalCo
         selectTrainSpinner.setAdapter(trainSpinnerAdapter);
 
         //enable submit button
-        Button submitButton = (Button) mainDashboardView.findViewById(R.id.submitTrain);
+//        Button submitButton = (Button) mainDashboardView.findViewById(R.id.submitTrain);
+        Button submitButton = fragmentView.findViewById(R.id.submitTrain);
         submitButton.setEnabled(true);
     }
 }

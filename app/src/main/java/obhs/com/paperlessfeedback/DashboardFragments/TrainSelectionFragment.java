@@ -8,13 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
+import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.Util.Util;
+
+import static obhs.com.paperlessfeedback.Util.Util.logd;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -22,17 +30,18 @@ import obhs.com.paperlessfeedback.R;
 
 public class TrainSelectionFragment extends Fragment {
     View view;
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-
-       // return inflater.inflate(R.layout.train_selection_fragment, container, false);
 
         view = inflater.inflate(R.layout.train_selection_fragment, container, false);
 
-        /////mannipec///
         Button submitButton = (Button) view.findViewById(R.id.submitTrain);
         final Spinner selectTrainSpinner = view.findViewById(R.id.selectTrainDropDown);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -42,9 +51,12 @@ public class TrainSelectionFragment extends Fragment {
                 GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
                 globalContext.setCurrentTrainIndex(selectTrainSpinner.getSelectedItemId());
                 Train selectedTrain = globalContext.getCurrentTrain();
-                Log.d("debugTag", "selectedTrain: " +  selectedTrain.getTrainName());
+//                Log.d("debugTag", "selectedTrain: " +  selectedTrain.getTrainName());
                 Trip currentTrip = new Trip(selectedTrain);
                 globalContext.setCurrentTrip(currentTrip);
+
+                //update shared pref
+                Util.updateTripStatusPref(getActivity());
 
                 //load fragment
                 loadFragment(new DashboardFragment());
@@ -53,20 +65,8 @@ public class TrainSelectionFragment extends Fragment {
 
         //disable submit button
         submitButton.setEnabled(false);
-        ////////
+        setupTrainList(view);
 
-
-//// get the reference of Button
-//        firstButton = (Button) view.findViewById(R.id.firstButton);
-//// perform setOnClickListener on first Button
-//        firstButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//// display a message by using a Toast
-//               // Toast.makeText(getActivity(), "First Fragment", Toast.LENGTH_LONG).show();
-//                loadFragment(new DashboardFragment());
-//            }
-//        });
         return view;
 
     }
@@ -81,5 +81,24 @@ public class TrainSelectionFragment extends Fragment {
         fragmentTransaction.commit(); // save the changes
     }
 
+    private void setupTrainList(View fragmentView) {
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+//        Log.d("DebugTag", "initial size: " + globalContext.getListOfTrains().size());
+//        logd("called setup");
+//        AsyncTaskUtil.getContextualAsyncTask(getActivity(), fragmentView).execute(globalContext);
+        Spinner selectTrainSpinner = fragmentView.findViewById(R.id.selectTrainDropDown);
+
+        List<String> trainListString = new ArrayList<String>();
+        for(Train train: globalContext.getListOfTrains()) {
+            trainListString.add(train.getTrainName() + " : " + train.getTrainNumber());
+        }
+        ArrayAdapter<String> trainSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, trainListString);
+        trainSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectTrainSpinner.setAdapter(trainSpinnerAdapter);
+
+        //enable submit button
+        Button submitButton = fragmentView.findViewById(R.id.submitTrain);
+        submitButton.setEnabled(true);
+    }
 
 }

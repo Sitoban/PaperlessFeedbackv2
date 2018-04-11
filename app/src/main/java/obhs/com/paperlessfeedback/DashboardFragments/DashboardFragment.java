@@ -3,6 +3,7 @@ package obhs.com.paperlessfeedback.DashboardFragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,24 +17,24 @@ import android.widget.Toast;
 
 import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.Beans.Feedback;
+import obhs.com.paperlessfeedback.DashboardActivity;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Beans.Coach;
-import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
+import obhs.com.paperlessfeedback.Util.Util;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -57,6 +58,11 @@ public class DashboardFragment extends Fragment {
 ///////////////
         takeFeedbackButton.setEnabled(true);
     }
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//    }
 
     @Override
     public void onStart() {
@@ -128,7 +134,8 @@ public class DashboardFragment extends Fragment {
                     updatePendingCompleted();
                 }
                 else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
-                    //edit: end trip here and go back to home home page
+                    Util.removeAllPrefs(getActivity());
+                    ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
                 }
                 Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
                         Toast.LENGTH_LONG).show();
@@ -148,9 +155,7 @@ public class DashboardFragment extends Fragment {
     }
 
     public void setNumEntriesLocal(int n) {
-        Log.d("debugTag", "setting numEntries: " + n);
-//        Log.d("debugTag", "thisFragment: " + this);
-//        Log.d("debugTag", "thisView: " + getView());
+//        Log.d("debugTag", "setting numEntries: " + n);
         TextView numEntriesLocalTextView = getView().findViewById(R.id.numEntriesLocal);
         numEntriesLocalTextView.setText("Sync Pending: " + n);
     }
