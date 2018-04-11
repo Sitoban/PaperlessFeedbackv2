@@ -1,26 +1,20 @@
 package obhs.com.paperlessfeedback.FeedbackFragments;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
-import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.FeedbackActivity;
-import obhs.com.paperlessfeedback.Network.CloudConnection;
 import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 import obhs.com.paperlessfeedback.Util.CameraHelper;

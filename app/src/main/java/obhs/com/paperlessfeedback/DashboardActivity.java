@@ -8,12 +8,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import obhs.com.paperlessfeedback.Beans.Coach;
+import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.DashboardFragments.TrainSelectionFragment;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
 import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
+
+import static obhs.com.paperlessfeedback.Util.Util.logd;
+import static obhs.com.paperlessfeedback.Util.Util.setupCustomTrain;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -34,15 +42,18 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        loadFragment(new TrainSelectionFragment());
 
         init();
         //setup trains list
-        setupTrainList();
+        //edit: setting up custom train
+        final GlobalContext globalContext = (GlobalContext) getApplicationContext();
+        List<Coach> coachList = new ArrayList<Coach>();
+        setupCustomTrain(coachList);
+        globalContext.addTrain(new Train("Shatabdi Express",94312, 1, coachList));
     }
 
 
-    private void loadFragment(Fragment fragment) {
+    public void loadFragment(Fragment fragment) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
@@ -52,31 +63,15 @@ public class DashboardActivity extends AppCompatActivity {
     private void init() {
         final GlobalContext globalContext = (GlobalContext) getApplicationContext();
 
+        //set first fragment
+        TrainSelectionFragment trainSelectionFragment = new TrainSelectionFragment();
+        loadFragment(trainSelectionFragment);
+        globalContext.setLiveTrainSelectionFragment(trainSelectionFragment);
+
         // set mainDashboardView
         globalContext.setDb(AppDatabase.getAppDatabase(this));
         View view = findViewById(R.id.frameLayout);
-        globalContext.setMainDashboardView(view);
-
-        //set submit button action
-//        Button submitButton = (Button) view.findViewById(R.id.submitTrain);
-//        submitButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(DashboardActivity.this, "Pressed submit",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        //disable submit button
-//        submitButton.setEnabled(false);
-//
+//        globalContext.setMainDashboardView(view);
     }
-
-    private void setupTrainList() {
-        final GlobalContext globalContext = (GlobalContext) getApplicationContext();
-//        Log.d("DebugTag", "initial size: " + globalContext.getListOfTrains().size());
-        AsyncTaskUtil.getContextualAsyncTask(this).execute(globalContext);
-    }
-
 
 }
