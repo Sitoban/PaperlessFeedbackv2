@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,28 +6,11 @@
 
     <!--TextView and Button displayed in First Fragment -->
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/linearLayout"
         android:padding="26dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/syncButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sync" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/numEntriesLocal"/>
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,82 +61,108 @@
                 android:textSize="50sp"
                 android:textStyle="bold" />
         </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu_bold"
-            android:text="Coach"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/coachSelectionSpinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="16dp">
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu_bold"
-            android:text="Feedback Type"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-        <RadioGroup
-            android:id="@+id/passenger_type"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_bold"
+                android:text="Coach"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/coachSelectionSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            >
+            android:paddingBottom="16dp">
 
-            <RadioButton
-                android:id="@+id/tt_button"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/ubuntu"
-                android:text="@string/tt"
-                android:enabled="true"/>
-            <RadioButton
-                android:id="@+id/passenger_button"
+                android:fontFamily="@font/ubuntu_bold"
+                android:text="Feedback Type"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/passenger_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/ubuntu"
-                android:text="@string/passenger"
-                android:checked="true" />
-        </RadioGroup>
-    </LinearLayout>
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/tt_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="true"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/tt" />
+
+                <RadioButton
+                    android:id="@+id/passenger_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/passenger" />
+            </RadioGroup>
+        </LinearLayout>
+
         <Button
             android:id="@+id/takeFeedbackButton"
+            style="?android:textAppearanceSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/take_feedback"
-            style="?android:textAppearanceSmall"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/endTripButton"
+            style="?android:textAppearanceSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/end_trip"
-            style="?android:textAppearanceSmall"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/numEntriesLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-</RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/syncButton"
+        android:layout_width="97dp"
+        android:layout_height="51dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_popup_sync" />
+</android.support.design.widget.CoordinatorLayout >

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,7 +99,7 @@ public class DashboardFragment extends Fragment {
                     return;
                 }
 
-                Toast.makeText(getActivity() , "Let's Start the Bad Boy", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity() , "Let's Start the Bad Boy", Toast.LENGTH_SHORT).show();
 
                 Context context = view.getContext();
                 Intent intent = new Intent(context, FeedbackActivity.class);
@@ -142,7 +143,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        Button syncButton = view.findViewById(R.id.syncButton);
+        FloatingActionButton syncButton = view.findViewById(R.id.syncButton);
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
