@@ -69,7 +69,7 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
                 JSONObject jsonObj = new JSONObject(response.toString());
                 String PNRResponseCode = jsonObj.getString("response_code");
                 Log.d("PNR: ", "response_code : " + PNRResponseCode);
-                if(PNRResponseCode.equals("221"))
+                if(PNRResponseCode.equals("404") || PNRResponseCode.equals("405"))
                 {
                     isValid = false;
                 }

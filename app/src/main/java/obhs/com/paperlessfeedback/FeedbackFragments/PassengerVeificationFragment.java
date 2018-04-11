@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.util.Random;
 
 import obhs.com.paperlessfeedback.Beans.Coach;
+import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.DashboardActivity;
 import obhs.com.paperlessfeedback.Beans.Passenger;
 import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
@@ -82,6 +83,7 @@ public class PassengerVeificationFragment extends Fragment{
 
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Feedback");
+        final Feedback.FeedbackType feedbackType = feedbackActivity.getCurrentFeedBackType();
         final Button otpButton = (Button) view.findViewById(R.id.send_otp_button);
         final AutoCompleteTextView mobileNumberField = (AutoCompleteTextView) view.findViewById(R.id.mobile_number);
         final TextInputLayout textInputMobileNumberField = (TextInputLayout) view.findViewById(R.id.text_input_mobile_number);
@@ -129,7 +131,8 @@ public class PassengerVeificationFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 String otpNumberString = otpNumberField.getText().toString();
-                IsMobileVerified = otpNumberString.equals(otpNumber);
+                IsMobileVerified = true; //otpNumberString.equals(otpNumber);
+                String mobileNumber = mobileNumberField.getText().toString();
 
                 int verificationStep = verifyOtpButton.getText() == "Verify PNR" ? 2: 1;
                 //if(otpNumberString.equals(otpNumber))
@@ -140,15 +143,24 @@ public class PassengerVeificationFragment extends Fragment{
                     {
                         Toast.makeText(getActivity() , "Mobile Verification Successful", Toast.LENGTH_SHORT).show();
 
+                        Log.d(TAG,"Feed Back Type : "+feedbackType);
 //                    FeedbackActivity activity = (FeedbackActivity)getActivity();
 //                    FeedbackFormFragment feedbackFormFragment = new FeedbackFormFragment(activity.getCurrentFeedBackType(), activity.g);
 //                    loadFragment(feedbackFormFragment);
-                        pnrNumberField.setVisibility(View.VISIBLE);
-                        textInputPnrNumberField.setVisibility(View.VISIBLE);
+                        if(feedbackType == Feedback.FeedbackType.PASSENGER)
+                        {
+                            pnrNumberField.setVisibility(View.VISIBLE);
+                            textInputPnrNumberField.setVisibility(View.VISIBLE);
 
-                        verifyOtpButton.setText("Verify PNR");
-                        otpNumberField.setVisibility(View.GONE);
-                        textInputOtpNumberField.setVisibility(View.GONE);
+                            verifyOtpButton.setText("Verify PNR");
+                            otpNumberField.setVisibility(View.GONE);
+                            textInputOtpNumberField.setVisibility(View.GONE);
+                        }
+                        else
+                        {
+                            feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, "-"));
+                            feedbackActivity.loadFragment(new FeedbackFormFragment());
+                        }
 
                         //save pnr and mobile
                         //String mobileNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.mobile_number)).getText().toString();
@@ -179,9 +191,10 @@ public class PassengerVeificationFragment extends Fragment{
                 else {
                     //IsPNRVerified =
                     verifyOtpButton.setEnabled(false);
-                    String mobileNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.mobile_number)).getText().toString();
-                     String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
+                    //String mobileNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.mobile_number)).getText().toString();
+                    String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
                     feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, pnrNumber));
+
                      new PNRStatusCheck(PVfragmentView).execute(pnrNumberField.getText().toString());
                 }
 

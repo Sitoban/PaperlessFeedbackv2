@@ -60,7 +60,7 @@ public class FeedbackActivity extends AppCompatActivity {
         loadFragment(passengerVeificationFragment);
     }
 
-    private void loadFragment(Fragment fragment) {
+    public void loadFragment(Fragment fragment) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
