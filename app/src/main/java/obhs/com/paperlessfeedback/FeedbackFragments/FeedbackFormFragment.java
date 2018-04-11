@@ -21,6 +21,7 @@ import obhs.com.paperlessfeedback.Util.CameraHelper;
 import obhs.com.paperlessfeedback.Util.Util;
 
 import static obhs.com.paperlessfeedback.Util.Util.getCheckedRadioButtonText;
+import static obhs.com.paperlessfeedback.Util.Util.logd;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -30,6 +31,7 @@ public class FeedbackFormFragment extends Fragment {
 
     public void init(View view) {
 
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
         final FeedbackActivity feedbackActivity = (FeedbackActivity)getActivity();
         feedbackActivity.setCurrentFeedback(new Feedback(feedbackActivity.getCurrentFeedBackType(),
                                         feedbackActivity.getCurrentCoach().getCoachType()));
@@ -74,6 +76,13 @@ public class FeedbackFormFragment extends Fragment {
                 Toast.makeText(feedbackActivity,
                         "PSI: " + Double.toString(currentFeedback.getPsi()) + "%", Toast.LENGTH_LONG).show();
                 feedbackActivity.getCurrentCoach().addFeedback(currentFeedback);
+
+                //update coach pref
+                logd("coachIndex: " + globalContext.getCurrentTrain().getCoachList().indexOf(feedbackActivity.getCurrentCoach()));
+                logd("string: " + String.valueOf(feedbackActivity.getCurrentCoach().getNumPasFeedback()) + ":" + String.valueOf(feedbackActivity.getCurrentCoach().getNumTteFeedback()));
+                Util.getPrefEditor(getActivity()).putString("Coach" + globalContext.getCurrentTrain().getCoachList().indexOf(feedbackActivity.getCurrentCoach()),
+                        String.valueOf(feedbackActivity.getCurrentCoach().getNumPasFeedback()) + ":" + String.valueOf(feedbackActivity.getCurrentCoach().getNumTteFeedback()) ).apply();
+
                 addFeedbackToDatabase();
                 getActivity().finish();
             }

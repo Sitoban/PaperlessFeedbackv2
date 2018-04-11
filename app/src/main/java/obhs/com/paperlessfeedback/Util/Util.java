@@ -67,7 +67,7 @@ public class Util {
 
         SharedPreferences.Editor editor = activity.getSharedPreferences(PREF_FILE, MODE_PRIVATE).edit();
         editor.putInt("tripProgress", globalContext.getCurrentTrip().getTripStatusIntVal()).apply();
-        Log.d("debugTag", "tripProgress: " + globalContext.getCurrentTrip().getTripStatusIntVal());
+        Log.d("debugTag", "tripProgress: " + getTripStatusPref(activity));
     }
 
     public static int getTripStatusPref(Activity activity) {
@@ -77,10 +77,19 @@ public class Util {
 
     public static void removeAllPrefs(Activity activity) {
         activity.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE).edit().clear().commit();
+        Log.d("debugTag", "tripProgress2: " + getTripStatusPref(activity));
     }
 
     public static void removePrefByName(Activity activity, String prefName) {
         activity.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE).edit().remove(prefName).commit();
+    }
+
+    public static SharedPreferences getSharedPrefs(Activity activity) {
+        return activity.getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+    }
+
+    public static SharedPreferences.Editor getPrefEditor(Activity activity) {
+        return getSharedPrefs(activity).edit();
     }
 
     public static void logd(String msg) {

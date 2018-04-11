@@ -53,6 +53,16 @@ public class Trip {
         createTripId();
     }
 
+    public Trip(Train t, TripStatus ts) {
+        train = t;
+        tripStatus = ts;
+
+        //edit: bug: use this from saved state
+        startTime = new Date();
+        createTripId();
+    }
+
+
     public void setNextTripState() {
         switch (tripStatus) {
             case GOING:

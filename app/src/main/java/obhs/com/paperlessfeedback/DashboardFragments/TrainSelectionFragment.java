@@ -17,11 +17,13 @@ import java.util.List;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.AsyncTaskHandler.AsyncTaskUtil;
+import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Train;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.Util.Util;
 
+import static obhs.com.paperlessfeedback.Util.Util.getSharedPrefs;
 import static obhs.com.paperlessfeedback.Util.Util.logd;
 
 /**
@@ -37,6 +39,53 @@ public class TrainSelectionFragment extends Fragment {
 //    }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        long tripStatus = Util.getTripStatusPref(getActivity());
+        if(tripStatus  == -1) {
+            //do nothing
+        }
+        else {
+            GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+            long trainIndex = getSharedPrefs(getActivity()).getLong("trainIndex", -1);
+            if(trainIndex  != -1) {
+                setGlobalVars(trainIndex, true);
+                int index = 0;
+                for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
+                    ++index;
+                    String coachFBstr = Util.getSharedPrefs(getActivity()).getString("Coach" + index , "null");
+                    if(coachFBstr == "null") {
+                        logd("unexpected coach feedback info");
+                    }
+                    else {
+                        String [] splitFB = coachFBstr.split(":");
+                        coach.setNumPasFeedback(Integer.parseInt(splitFB[0]));
+                        coach.setNumTteFeedback(Integer.parseInt(splitFB[1]));
+                    }
+                }
+                //load fragment
+                loadFragment(new DashboardFragment());
+            }
+        }
+    }
+
+    public void setGlobalVars(long trainIndex, boolean restore) {
+        GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        globalContext.setCurrentTrainIndex(trainIndex);
+        Train selectedTrain = globalContext.getCurrentTrain();
+        Trip currentTrip = null;
+        if(!restore) {
+            currentTrip = new Trip(selectedTrain); //edit: 2 way
+        }
+        else {
+            //edit: bug: restore from state save
+            currentTrip = new Trip(selectedTrain, Trip.TripStatus.GOING);
+        }
+        globalContext.setCurrentTrip(currentTrip);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -49,14 +98,22 @@ public class TrainSelectionFragment extends Fragment {
             public void onClick(View view) {
                 //get selectedTrain and create trip
                 GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
-                globalContext.setCurrentTrainIndex(selectTrainSpinner.getSelectedItemId());
-                Train selectedTrain = globalContext.getCurrentTrain();
+                long trainIndex = selectTrainSpinner.getSelectedItemId();
+                setGlobalVars(trainIndex, false);
+//                globalContext.setCurrentTrainIndex(trainIndex);
+//                Train selectedTrain = globalContext.getCurrentTrain();
 //                Log.d("debugTag", "selectedTrain: " +  selectedTrain.getTrainName());
-                Trip currentTrip = new Trip(selectedTrain);
-                globalContext.setCurrentTrip(currentTrip);
+//                Trip currentTrip = new Trip(selectedTrain);
+//                globalContext.setCurrentTrip(currentTrip);
 
                 //update shared pref
                 Util.updateTripStatusPref(getActivity());
+                Util.getPrefEditor(getActivity()).putLong("trainIndex", trainIndex).apply();
+                int index = 0;
+                for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
+                    ++index;
+                    Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
+                }
 
                 //load fragment
                 loadFragment(new DashboardFragment());

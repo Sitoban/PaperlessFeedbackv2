@@ -111,7 +111,15 @@ public class Coach {
         return numTteFeedback;
     }
 
+    public void setNumTteFeedback(int numTteFeedback) {
+        this.numTteFeedback = numTteFeedback;
+    }
+
     public int getNumPasFeedback() {
         return numPasFeedback;
+    }
+
+    public void setNumPasFeedback(int numPasFeedback) {
+        this.numPasFeedback = numPasFeedback;
     }
 }

@@ -68,10 +68,8 @@ public class DashboardActivity extends AppCompatActivity {
         loadFragment(trainSelectionFragment);
         globalContext.setLiveTrainSelectionFragment(trainSelectionFragment);
 
-        // set mainDashboardView
         globalContext.setDb(AppDatabase.getAppDatabase(this));
         View view = findViewById(R.id.frameLayout);
-//        globalContext.setMainDashboardView(view);
     }
 
 }
