@@ -67,13 +67,12 @@ public class Trip {
         createTripId();
     }
 
-    public Trip(Train t, TripStatus ts) {
+    public Trip(Train t, TripStatus ts, Date date, long ti) {
         train = t;
         tripStatus = ts;
 
-        //edit: bug: use this from saved state
-        startTime = new Date();
-        createTripId();
+        startTime = date;
+        tripId = ti;
     }
 
 

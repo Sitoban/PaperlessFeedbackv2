@@ -8,9 +8,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
@@ -59,8 +61,20 @@ public class Util {
         return buttonText;
     }
 
-    public static String getDateString(Date date) {
+    public static String getStringFromDate(Date date) {
         return (new SimpleDateFormat("dd-MM-yyyy").format(date));
+    }
+
+    public static Date getDateFromString(String dateString) {
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException e) {
+            loge("date parsing error");
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public static void updateTripStatusPref(Activity activity, int tripStatus) {
@@ -95,6 +109,10 @@ public class Util {
 
     public static void logd(String msg) {
         Log.d("debugTag", msg);
+    }
+
+    public static void loge(String msg) {
+        Log.e("debugTag", msg);
     }
 
     public static void printCoachFeedbackCount(GlobalContext globalContext) {

@@ -84,11 +84,16 @@ public class TrainSelectionFragment extends Fragment {
         Train selectedTrain = globalContext.getCurrentTrain();
         Trip currentTrip = null;
         if(!restore) {
-            currentTrip = new Trip(selectedTrain); //edit: 2 way
+            currentTrip = new Trip(selectedTrain);
         }
         else {
             int tripStatus = Util.getTripStatusPref(getActivity());
-            currentTrip = new Trip(selectedTrain, Trip.getTripStatusFromIntVal(tripStatus));
+            String tripDateString = Util.getSharedPrefs(getActivity()).getString("tripDate", "11-11-1111");
+            logd("tripDateString: " + tripDateString);
+            logd("tripDate: " + Util.getDateFromString(tripDateString));
+            long tripId = Util.getSharedPrefs(getActivity()).getLong("tripId", -1);
+            logd("tripId: " + tripId);
+            currentTrip = new Trip(selectedTrain, Trip.getTripStatusFromIntVal(tripStatus), Util.getDateFromString(tripDateString), tripId);
         }
         globalContext.setCurrentTrip(currentTrip);
 
@@ -118,6 +123,9 @@ public class TrainSelectionFragment extends Fragment {
                 //update shared pref
                 Util.updateTripStatusPref(getActivity(), Trip.getTripStatusIntVal(Trip.TripStatus.GOING));
                 Util.getPrefEditor(getActivity()).putLong("trainIndex", trainIndex).apply();
+                logd("saving date: " + Util.getStringFromDate(globalContext.getCurrentTrip().getStartTime()));
+                Util.getPrefEditor(getActivity()).putString("tripDate", Util.getStringFromDate(globalContext.getCurrentTrip().getStartTime())).apply();
+                Util.getPrefEditor(getActivity()).putLong("tripId", globalContext.getCurrentTrip().getTripId()).apply();
                 int index = 0;
                 for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
                     Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
