@@ -15,6 +15,7 @@ import java.util.Random;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Beans.Coach;
+import obhs.com.paperlessfeedback.Beans.Train;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -62,11 +63,11 @@ public class Util {
         return (new SimpleDateFormat("dd-MM-yyyy").format(date));
     }
 
-    public static void updateTripStatusPref(Activity activity) {
-        GlobalContext globalContext = (GlobalContext) activity.getApplicationContext();
+    public static void updateTripStatusPref(Activity activity, int tripStatus) {
+//        GlobalContext globalContext = (GlobalContext) activity.getApplicationContext();
 
         SharedPreferences.Editor editor = activity.getSharedPreferences(PREF_FILE, MODE_PRIVATE).edit();
-        editor.putInt("tripProgress", globalContext.getCurrentTrip().getTripStatusIntVal()).apply();
+        editor.putInt("tripProgress", tripStatus).apply();
         Log.d("debugTag", "tripProgress: " + getTripStatusPref(activity));
     }
 
@@ -94,5 +95,16 @@ public class Util {
 
     public static void logd(String msg) {
         Log.d("debugTag", msg);
+    }
+
+    public static void printCoachFeedbackCount(GlobalContext globalContext) {
+        Train train = globalContext.getCurrentTrain();
+        logd("-----------------");
+        int i = 0;
+        for(Coach coach: train.getCoachList()) {
+            logd("coachId: " + train.getCoachList().indexOf(coach) + " : " + i  + ", name: " + coach.getCoachNumber() + ", numPas: " + coach.getNumPasFeedback() + ", numtte: " + coach.getNumTteFeedback());
+            i++;
+        }
+        logd("-----------------");
     }
 }

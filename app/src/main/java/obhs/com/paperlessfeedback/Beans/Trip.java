@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static obhs.com.paperlessfeedback.Beans.Trip.TripStatus.ARRIVING;
 import static obhs.com.paperlessfeedback.Beans.Trip.TripStatus.GOING;
 
 /**
@@ -27,7 +28,7 @@ public class Trip {
 
     private TripStatus tripStatus;
 
-    public int getTripStatusIntVal() {
+    public static int getTripStatusIntVal(TripStatus tripStatus) {
         int result = -1;
         switch (tripStatus) {
             case GOING:
@@ -35,6 +36,19 @@ public class Trip {
                 break;
             case ARRIVING:
                 result = 1;
+                break;
+        }
+        return result;
+    }
+
+    public static TripStatus getTripStatusFromIntVal(int val) {
+        TripStatus result = null;
+        switch (val) {
+            case 0:
+                result = GOING;
+                break;
+            case 1:
+                result = ARRIVING;
                 break;
         }
         return result;
@@ -99,7 +113,7 @@ public class Trip {
         int numCompleted = 0;
         for(Coach coach:getTrain().getCoachList()) {
 //            Log.d("debugTag", "numFeed " + coach.getCoachNumber() + ": " + coach.getNumPasFeedback());
-            numCompleted += coach.getNumPasFeedback();
+            numCompleted += coach.getNumPasFeedback() + coach.getNumTteFeedback();
         }
         return numCompleted;
     }

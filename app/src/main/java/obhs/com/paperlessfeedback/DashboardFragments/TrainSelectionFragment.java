@@ -41,8 +41,8 @@ public class TrainSelectionFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        long tripStatus = Util.getTripStatusPref(getActivity());
-        if(tripStatus  == -1) {
+        int tripStatus = Util.getTripStatusPref(getActivity());
+        if(tripStatus == -1) {
             //do nothing
         }
         else {
@@ -52,7 +52,6 @@ public class TrainSelectionFragment extends Fragment {
                 setGlobalVars(trainIndex, true);
                 int index = 0;
                 for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
-                    ++index;
                     String coachFBstr = Util.getSharedPrefs(getActivity()).getString("Coach" + index , "null");
                     if(coachFBstr == "null") {
                         logd("unexpected coach feedback info");
@@ -62,9 +61,19 @@ public class TrainSelectionFragment extends Fragment {
                         coach.setNumPasFeedback(Integer.parseInt(splitFB[0]));
                         coach.setNumTteFeedback(Integer.parseInt(splitFB[1]));
                     }
+                    ++index;
                 }
                 //load fragment
-                loadFragment(new DashboardFragment());
+                Fragment dashboardFragment = new DashboardFragment();
+                Bundle bundle = new Bundle();
+                if(tripStatus == 0) {
+                    bundle.putBoolean("isMidWay", false);
+                }
+                else if(tripStatus == 1) {
+                    bundle.putBoolean("isMidWay", true);
+                }
+                dashboardFragment.setArguments(bundle);
+                loadFragment(dashboardFragment);
             }
         }
     }
@@ -78,8 +87,8 @@ public class TrainSelectionFragment extends Fragment {
             currentTrip = new Trip(selectedTrain); //edit: 2 way
         }
         else {
-            //edit: bug: restore from state save
-            currentTrip = new Trip(selectedTrain, Trip.TripStatus.GOING);
+            int tripStatus = Util.getTripStatusPref(getActivity());
+            currentTrip = new Trip(selectedTrain, Trip.getTripStatusFromIntVal(tripStatus));
         }
         globalContext.setCurrentTrip(currentTrip);
 
@@ -107,12 +116,12 @@ public class TrainSelectionFragment extends Fragment {
 //                globalContext.setCurrentTrip(currentTrip);
 
                 //update shared pref
-                Util.updateTripStatusPref(getActivity());
+                Util.updateTripStatusPref(getActivity(), Trip.getTripStatusIntVal(Trip.TripStatus.GOING));
                 Util.getPrefEditor(getActivity()).putLong("trainIndex", trainIndex).apply();
                 int index = 0;
                 for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
-                    ++index;
                     Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
+                    ++index;
                 }
 
                 //load fragment
