@@ -164,7 +164,9 @@ public class PassengerVeificationFragment extends Fragment{
                     String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
                     feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, pnrNumber));
 
-                     new PNRStatusCheck(PVfragmentView).execute(pnrNumberField.getText().toString());
+                    String seatNumber = String.valueOf(feedbackActivity.getCurrentSeatNumber());
+                    //String pnrNumber =pnrNumberField.getText().toString();
+                     new PNRStatusCheck(PVfragmentView).execute(pnrNumber,seatNumber);
                 }
 
             }
@@ -213,8 +215,9 @@ public class PassengerVeificationFragment extends Fragment{
     {
         otpNumber = generateOTP();
         Log.d("OTP",otpNumber);
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(mobileNumberString, null, otpNumber, null, null);
-
+        //TODO: Do Not Remove
+        // SmsManager smsManager = SmsManager.getDefault();
+        // smsManager.sendTextMessage(mobileNumberString, null, otpNumber, null, null);
+        //TODO: Do Not Remove
     }
 }

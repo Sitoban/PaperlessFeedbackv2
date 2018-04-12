@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -22,6 +23,9 @@ import java.net.URL;
 import obhs.com.paperlessfeedback.FeedbackFragments.FeedbackFormFragment;
 import obhs.com.paperlessfeedback.FeedbackFragments.PassengerVeificationFragment;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.Util.Util;
+
+import static obhs.com.paperlessfeedback.Util.Util.logd;
 
 /**
  * Created by 1018651 on 04/09/2018.
@@ -39,6 +43,7 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
     @Override
     protected Boolean doInBackground(String... strings) {
         String pnrNumber = strings[0];
+        String seatNumber = strings[1];
         Boolean isValid = true;
         HttpURLConnection connection = null;
         BufferedReader reader = null;
@@ -73,7 +78,17 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
                 {
                     isValid = false;
                 }
-                // print result
+                else
+                if(PNRResponseCode.equals("200"))
+                {
+                    JSONArray passengerArray = jsonObj.getJSONArray("passengers");
+                    String bookingString = passengerArray.toString();
+                    if(!bookingString.contains("/"+seatNumber))
+                    {
+                        isValid = false;
+                    }
+                    logd("Booking Contains Seat : "+bookingString.contains("/"+seatNumber));
+                }
                 System.out.println(response.toString());
                 Log.d("PNR: ", "server reply: " + response.toString());
             } else {
