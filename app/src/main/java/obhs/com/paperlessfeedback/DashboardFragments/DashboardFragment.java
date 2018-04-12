@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,12 +83,14 @@ public class DashboardFragment extends Fragment {
 
         Button takeFeedback = (Button) view.findViewById(R.id.takeFeedbackButton);
         final Spinner coachSelectionSpinner = view.findViewById(R.id.coachSelectionSpinner);
+        final RadioGroup radioGroup = (RadioGroup)view.findViewById(R.id.passenger_type);
         final Fragment thisFragment = this;
         takeFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //validating if seat is available for feedback
                 long coachIndex = coachSelectionSpinner.getSelectedItemId();
+                Feedback.FeedbackType passengerType = getFeedbackTypeSelection(radioGroup);
                 Coach currentCoach = globalContext.getCurrentTrain().getCoachList().get((int)coachIndex);
                 if(!currentCoach.isSeatAvailableForFeedback()) {
                     Toast.makeText(getActivity() , "No seat available, for feedback in this coach", Toast.LENGTH_LONG).show();
@@ -106,7 +111,8 @@ public class DashboardFragment extends Fragment {
 //                intent.putExtra("dashboard", (Serializable)thisFragment);
                 intent.putExtra("seatNumber", currentCoach.getRandomSeat());
                 //edit: pass appropriate type -- TT or passenger
-                intent.putExtra("feedbackType", Feedback.FeedbackType.PASSENGER);
+                Log.d("FeedbackType : ",passengerType.toString());
+                intent.putExtra("feedbackType", passengerType);
                 context.startActivity(intent);
             }
         });
@@ -136,7 +142,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        Button syncButton = view.findViewById(R.id.syncButton);
+        FloatingActionButton syncButton = view.findViewById(R.id.syncButton);
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,5 +173,10 @@ public class DashboardFragment extends Fragment {
 
         completedFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumCompletedFeedbacks()));
         pendingFeedbackTextView.setText(Integer.toString(globalContext.getCurrentTrip().getNumPendingFeedbacks()));
+    }
+
+    public Feedback.FeedbackType getFeedbackTypeSelection(RadioGroup radioGroup)
+    {
+        return radioGroup.getCheckedRadioButtonId() == R.id.tt_button ? Feedback.FeedbackType.TTE: Feedback.FeedbackType.PASSENGER;
     }
 }

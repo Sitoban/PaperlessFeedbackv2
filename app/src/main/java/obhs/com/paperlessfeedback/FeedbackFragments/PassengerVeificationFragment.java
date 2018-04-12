@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,15 +64,12 @@ public class PassengerVeificationFragment extends Fragment{
         return Integer.toString(otp);
     }
 
-    private void loadFragment(Fragment fragment) {
-// create a FragmentManager
-        FragmentManager fm = getFragmentManager();
-// create a FragmentTransaction to begin the transaction and replace the Fragment
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-// replace the FrameLayout with new Fragment
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit(); // save the changes
-    }
+//    private void loadFragment(Fragment fragment) {
+//        FragmentManager fm = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//        fragmentTransaction.replace(R.id.frameLayout, fragment);
+//        fragmentTransaction.commit();
+//    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -85,6 +83,7 @@ public class PassengerVeificationFragment extends Fragment{
         getActivity().setTitle("Feedback");
         final Feedback.FeedbackType feedbackType = feedbackActivity.getCurrentFeedBackType();
         final Button otpButton = (Button) view.findViewById(R.id.send_otp_button);
+        final Button resendotpButton = (Button) view.findViewById(R.id.resend_otp_button);
         final AutoCompleteTextView mobileNumberField = (AutoCompleteTextView) view.findViewById(R.id.mobile_number);
         final TextInputLayout textInputMobileNumberField = (TextInputLayout) view.findViewById(R.id.text_input_mobile_number);
 
@@ -103,27 +102,21 @@ public class PassengerVeificationFragment extends Fragment{
 
                // new PNRStatusCheck(fragmentView).execute(pnrNumberField.getText().toString());
                 String mobileNumberString = mobileNumberField.getText().toString();
-                otpNumber = generateOTP();
-                Log.d("OTP",otpNumber);
-                // SmsManager smsManager = SmsManager.getDefault();
-                // smsManager.sendTextMessage(mobileNumberString, null, otpNumber, null, null);
+                generateAndSendOTP(mobileNumberString);
 
                 /////////Start Hiding
                 mobileNumberField.setVisibility(View.GONE);
                 otpButton.setVisibility(View.GONE);
                 textInputMobileNumberField.setVisibility(View.GONE);
 
-                //pnrNumberField.setVisibility(View.GONE);
-                //textInputPnrNumberField.setVisibility(View.GONE);
-                ////// End Hiding
 
-                /// Start Showing
+
                 verifyOtpButton.setVisibility(View.VISIBLE);
+                resendotpButton.setVisibility(View.VISIBLE);
                 otpNumberField.setVisibility(View.VISIBLE);
                 textInputOtpNumberField.setVisibility(View.VISIBLE);
                 /// End Showing
 
-                //attemptLogin();
             }
         });
 
@@ -131,12 +124,10 @@ public class PassengerVeificationFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 String otpNumberString = otpNumberField.getText().toString();
-                IsMobileVerified = true; //otpNumberString.equals(otpNumber);
+                IsMobileVerified = otpNumberString.equals(otpNumber);
                 String mobileNumber = mobileNumberField.getText().toString();
 
                 int verificationStep = verifyOtpButton.getText() == "Verify PNR" ? 2: 1;
-                //if(otpNumberString.equals(otpNumber))
-
                 if(verificationStep == 1)
                 {
                     if(IsMobileVerified)
@@ -144,11 +135,10 @@ public class PassengerVeificationFragment extends Fragment{
                         Toast.makeText(getActivity() , "Mobile Verification Successful", Toast.LENGTH_SHORT).show();
 
                         Log.d(TAG,"Feed Back Type : "+feedbackType);
-//                    FeedbackActivity activity = (FeedbackActivity)getActivity();
-//                    FeedbackFormFragment feedbackFormFragment = new FeedbackFormFragment(activity.getCurrentFeedBackType(), activity.g);
-//                    loadFragment(feedbackFormFragment);
+
                         if(feedbackType == Feedback.FeedbackType.PASSENGER)
                         {
+                            resendotpButton.setVisibility(View.GONE);
                             pnrNumberField.setVisibility(View.VISIBLE);
                             textInputPnrNumberField.setVisibility(View.VISIBLE);
 
@@ -162,36 +152,14 @@ public class PassengerVeificationFragment extends Fragment{
                             feedbackActivity.loadFragment(new FeedbackFormFragment());
                         }
 
-                        //save pnr and mobile
-                        //String mobileNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.mobile_number)).getText().toString();
-                        // String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
-                        //feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, pnrNumber));
-
-                        //loadFragment(new FeedbackFormFragment());
                     }
                     else
                     {
-                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-
-                        alertDialog.setTitle("Alert Dialog");
-
-                        alertDialog.setMessage("Invalid OTP");
-                        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-
-                                //Toast.makeText(getActivity() , "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();
+                        showInvalidMessage();
                     }
                 }
                 else {
-                    //IsPNRVerified =
                     verifyOtpButton.setEnabled(false);
-                    //String mobileNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.mobile_number)).getText().toString();
                     String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
                     feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, pnrNumber));
 
@@ -201,6 +169,13 @@ public class PassengerVeificationFragment extends Fragment{
             }
         });
 
+        resendotpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mobileNumberString = mobileNumberField.getText().toString();
+                onResendOTPClick(resendotpButton,mobileNumberString);
+            }
+        });
         //set coach number and seat number for feedback
         TextView textView = getView().findViewById(R.id.seatNumberTextView);
         textView.setText("Coach : " + feedbackActivity.getCurrentCoach().getCoachNumber() + ", Seat: " + feedbackActivity.getCurrentSeatNumber());
@@ -214,5 +189,31 @@ public class PassengerVeificationFragment extends Fragment{
                 getActivity().finish();
             }
         });
+    }
+    private void showInvalidMessage()
+    {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Alert Dialog");
+        alertDialog.setMessage("Invalid OTP");
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void onResendOTPClick(Button resendOtpButton, String mobileNumberString)
+    {
+        resendOtpButton.setVisibility(View.GONE);
+        generateAndSendOTP(mobileNumberString);
+
+    }
+    private void generateAndSendOTP(String mobileNumberString)
+    {
+        otpNumber = generateOTP();
+        Log.d("OTP",otpNumber);
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(mobileNumberString, null, otpNumber, null, null);
+
     }
 }
