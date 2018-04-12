@@ -29,7 +29,7 @@ public class Train {
 
     private void getSetNumRequiredFeedbacks() {
         //edit: make changes for accomodating tte feedback
-        numRequiredFeedbacks = (coachList.size())*NUM_FEEDBACK_PER_COACH_PER_TYPE;
+        numRequiredFeedbacks = (coachList.size()) * NUM_FEEDBACK_PER_COACH_PER_TYPE * 2;
     }
 
     public String getTrainName() {

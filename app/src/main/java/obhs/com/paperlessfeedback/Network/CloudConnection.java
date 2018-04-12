@@ -132,8 +132,8 @@ public class CloudConnection extends AsyncTask<FeedbackObj, Void, Integer> {
         globalContext.setNumLocalDbFeedbacks(n);
         globalContext.getLiveDashboardFragment().setNumEntriesLocal(n);
         if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING) {
-            boolean enable = (n == 0)?true:false;
-            globalContext.getLiveDashboardFragment().setEndTripButtonEnabled(enable);
+//            boolean enable = (n == 0)?true:false;
+//            globalContext.getLiveDashboardFragment().setEndTripButtonEnabled(enable);
         }
     }
 }

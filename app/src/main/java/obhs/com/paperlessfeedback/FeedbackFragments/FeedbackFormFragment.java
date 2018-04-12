@@ -33,6 +33,7 @@ public class FeedbackFormFragment extends Fragment {
 
         final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
         final FeedbackActivity feedbackActivity = (FeedbackActivity)getActivity();
+        logd("current type:" + feedbackActivity.getCurrentFeedBackType());
         feedbackActivity.setCurrentFeedback(new Feedback(feedbackActivity.getCurrentFeedBackType(),
                                         feedbackActivity.getCurrentCoach().getCoachType()));
         final Feedback currentFeedback = feedbackActivity.getCurrentFeedback();

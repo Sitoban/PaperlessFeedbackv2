@@ -36,6 +36,7 @@ import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 import obhs.com.paperlessfeedback.Util.Util;
 
 import static android.content.Context.MODE_PRIVATE;
+import static obhs.com.paperlessfeedback.Util.Util.logd;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -69,6 +70,18 @@ public class DashboardFragment extends Fragment {
     public void onStart() {
         super.onStart();
         updatePendingCompleted();
+
+        Util.printCoachFeedbackCount((GlobalContext) getActivity().getApplicationContext());
+
+        Bundle bundle = this.getArguments();
+        boolean isMidWay = false;
+        if (bundle != null) {
+            isMidWay = bundle.getBoolean("isMidWay", false);
+        }
+        logd("isMidWay: " + isMidWay);
+        if(isMidWay) {
+            resetTripVarsForMidWay((GlobalContext) getActivity().getApplicationContext(), (Button) getView().findViewById(R.id.endTripButton));
+        }
     }
 
     @Override
@@ -125,13 +138,18 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING) {
                     //edit: test that if number of pending sync > 0, then end trip is disabled
-                    boolean enable = (globalContext.getNumLocalDbFeedbacks() == 0)?true:false;
-                    endTripButton.setEnabled(enable);
+//                    boolean enable = (globalContext.getNumLocalDbFeedbacks() == 0)?true:false;
+//                    endTripButton.setEnabled(enable);
+                    //reset preferences for coach num feedbacks
+                    int index = 0;
+                    for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
+                        Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
+                        ++index;
+                    }
+                    Util.updateTripStatusPref(getActivity(), Trip.getTripStatusIntVal(Trip.TripStatus.ARRIVING));
+
                     globalContext.getCurrentTrain().resetCoachNumFeedbacks();
-                    globalContext.getCurrentTrip().setNextTripState();
-                    endTripButton.setText("End Trip");
-                    updatePendingCompleted();
-                    Util.updateTripStatusPref(getActivity());
+                    resetTripVarsForMidWay(globalContext, endTripButton);
                 }
                 else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
                     Util.removeAllPrefs(getActivity());
@@ -152,6 +170,12 @@ public class DashboardFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void resetTripVarsForMidWay(GlobalContext globalContext, Button endTripButton) {
+        globalContext.getCurrentTrip().setNextTripState();
+        endTripButton.setText("End Trip");
+        updatePendingCompleted();
     }
 
     public void setNumEntriesLocal(int n) {
