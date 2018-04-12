@@ -20,11 +20,8 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Feedback;
-import obhs.com.paperlessfeedback.DashboardActivity;
 import obhs.com.paperlessfeedback.Beans.Passenger;
-import obhs.com.paperlessfeedback.DashboardFragments.DashboardFragment;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.Network.PNRStatusCheck;
 import obhs.com.paperlessfeedback.R;
@@ -83,6 +80,7 @@ public class PassengerVeificationFragment extends Fragment{
         getActivity().setTitle("Feedback");
         final Feedback.FeedbackType feedbackType = feedbackActivity.getCurrentFeedBackType();
         final Button otpButton = (Button) view.findViewById(R.id.send_otp_button);
+        final TextView mobileNumberText = (TextView) view.findViewById(R.id.textViewOfMobileNumber);
         final Button resendotpButton = (Button) view.findViewById(R.id.resend_otp_button);
         final AutoCompleteTextView mobileNumberField = (AutoCompleteTextView) view.findViewById(R.id.mobile_number);
         final TextInputLayout textInputMobileNumberField = (TextInputLayout) view.findViewById(R.id.text_input_mobile_number);
@@ -103,7 +101,7 @@ public class PassengerVeificationFragment extends Fragment{
                // new PNRStatusCheck(fragmentView).execute(pnrNumberField.getText().toString());
                 String mobileNumberString = mobileNumberField.getText().toString();
                 generateAndSendOTP(mobileNumberString);
-
+                mobileNumberText.setText("Mobile Number : "+mobileNumberString);
                 /////////Start Hiding
                 mobileNumberField.setVisibility(View.GONE);
                 otpButton.setVisibility(View.GONE);
@@ -115,6 +113,7 @@ public class PassengerVeificationFragment extends Fragment{
                 resendotpButton.setVisibility(View.VISIBLE);
                 otpNumberField.setVisibility(View.VISIBLE);
                 textInputOtpNumberField.setVisibility(View.VISIBLE);
+                mobileNumberText.setVisibility(View.VISIBLE);
                 /// End Showing
 
             }
@@ -130,6 +129,7 @@ public class PassengerVeificationFragment extends Fragment{
                 int verificationStep = verifyOtpButton.getText() == "Verify PNR" ? 2: 1;
                 if(verificationStep == 1)
                 {
+                    mobileNumberText.setVisibility(View.VISIBLE);
                     if(IsMobileVerified)
                     {
                         Toast.makeText(getActivity() , "Mobile Verification Successful", Toast.LENGTH_SHORT).show();
@@ -144,6 +144,7 @@ public class PassengerVeificationFragment extends Fragment{
 
                             verifyOtpButton.setText("Verify PNR");
                             otpNumberField.setVisibility(View.GONE);
+                            mobileNumberText.setVisibility(View.GONE);
                             textInputOtpNumberField.setVisibility(View.GONE);
                         }
                         else
