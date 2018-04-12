@@ -18,6 +18,8 @@ import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.RoomDatabase.Database.AppDatabase;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 
+import static obhs.com.paperlessfeedback.Util.Util.logd;
+
 /**
  * Created by 1018651 on 04/03/2018.
  */
@@ -86,8 +88,7 @@ public class CloudConnection extends AsyncTask<FeedbackObj, Void, Integer> {
                 //os.write(currentFeedbackObj.getQueryString().getBytes());
                 os.flush();
 
-                //edit: remove when success from server
-                db.feedbackObjDao().delete(currentFeedbackObj);
+
 
                 InputStream stream = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
@@ -99,6 +100,14 @@ public class CloudConnection extends AsyncTask<FeedbackObj, Void, Integer> {
 
                 String finalJson = buffer.toString();
                 Log.d("debugTag: ", "server reply: " + finalJson);
+                if(finalJson.contains("Success"))
+                {
+                    db.feedbackObjDao().delete(currentFeedbackObj);
+                }
+                else
+                {
+                    logd("Server has not returned success");
+                }
                 os.close();
                 connection.disconnect();
             }

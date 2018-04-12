@@ -196,8 +196,8 @@ public class PassengerVeificationFragment extends Fragment{
     private void showInvalidMessage()
     {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Alert Dialog");
-        alertDialog.setMessage("Invalid OTP");
+        alertDialog.setTitle("Invalid OTP");
+        alertDialog.setMessage("You have entered a wrong/invalid OTP, Verify the same and Re-enter correct OTP to proceed.");
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             }
