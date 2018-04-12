@@ -1,7 +1,9 @@
 package obhs.com.paperlessfeedback.DashboardFragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -152,11 +154,12 @@ public class DashboardFragment extends Fragment {
                     resetTripVarsForMidWay(globalContext, endTripButton);
                 }
                 else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
-                    Util.removeAllPrefs(getActivity());
-                    ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
+                    showConfirmationMessageAndEndTrip(globalContext);
+//                    Util.removeAllPrefs(getActivity());
+//                    ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
                 }
-                Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
-                        Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
+               //         Toast.LENGTH_LONG).show();
             }
         });
 
@@ -202,5 +205,36 @@ public class DashboardFragment extends Fragment {
     public Feedback.FeedbackType getFeedbackTypeSelection(RadioGroup radioGroup)
     {
         return radioGroup.getCheckedRadioButtonId() == R.id.tt_button ? Feedback.FeedbackType.TTE: Feedback.FeedbackType.PASSENGER;
+    }
+
+    private void showConfirmationMessageAndEndTrip(final GlobalContext globalContext) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Util.removeAllPrefs(getActivity());
+                ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setTitle("End Trip Confirmation");
+        dialog.setMessage(getEndTripConfirmationMessage(globalContext));
+        dialog.show();
+    }
+
+
+    private String getEndTripConfirmationMessage(GlobalContext globalContext)
+    {
+
+        String message = "Do you really want to end the trip?";
+        if(globalContext.getNumLocalDbFeedbacks() > 0)
+        {
+            message = "There are some feedback yet to be synced, "+message;
+        }
+        return message;
     }
 }
