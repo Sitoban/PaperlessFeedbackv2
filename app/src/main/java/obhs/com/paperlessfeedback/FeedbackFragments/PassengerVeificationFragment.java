@@ -25,6 +25,7 @@ import obhs.com.paperlessfeedback.Beans.Passenger;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.Network.PNRStatusCheck;
 import obhs.com.paperlessfeedback.R;
+import obhs.com.paperlessfeedback.Util.Util;
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -189,20 +190,23 @@ public class PassengerVeificationFragment extends Fragment{
         cancelFeedbackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+                String title = "Cancel Feedback";
+                String message= "Are you sure you want to cancel this feedback?";
+                Util.showConfirmationDialog(getActivity(), title, message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getActivity().finish();
+                    }
+                });
+
             }
         });
     }
     private void showInvalidMessage()
     {
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Invalid OTP");
-        alertDialog.setMessage("You have entered a wrong/invalid OTP, Verify the same and Re-enter correct OTP to proceed.");
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        alertDialog.show();
+        String title = "Invalid OTP";
+        String message = "You have entered a wrong/invalid OTP, Verify the same and Re-enter correct OTP to proceed.";
+        Util.showInvalidDialog(getActivity(),title,message);
     }
 
     private void onResendOTPClick(Button resendOtpButton, String mobileNumberString)

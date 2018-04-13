@@ -143,15 +143,27 @@ public class DashboardFragment extends Fragment {
 //                    boolean enable = (globalContext.getNumLocalDbFeedbacks() == 0)?true:false;
 //                    endTripButton.setEnabled(enable);
                     //reset preferences for coach num feedbacks
-                    int index = 0;
-                    for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
-                        Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
-                        ++index;
-                    }
-                    Util.updateTripStatusPref(getActivity(), Trip.getTripStatusIntVal(Trip.TripStatus.ARRIVING));
 
-                    globalContext.getCurrentTrain().resetCoachNumFeedbacks();
-                    resetTripVarsForMidWay(globalContext, endTripButton);
+                    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            int index = 0;
+                            for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
+                                Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
+                                ++index;
+                            }
+
+
+                            Util.updateTripStatusPref(getActivity(), Trip.getTripStatusIntVal(Trip.TripStatus.ARRIVING));
+
+                            globalContext.getCurrentTrain().resetCoachNumFeedbacks();
+                            resetTripVarsForMidWay(globalContext, endTripButton);
+
+                        }};
+                    String title = "Mid Trip Confirmation";
+                    String message = "Are you sure you want to end Onwards Journey?";
+                    Util.showConfirmationDialog(getActivity(),title,message,listener);
+
                 }
                 else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
                     showConfirmationMessageAndEndTrip(globalContext);
@@ -208,22 +220,16 @@ public class DashboardFragment extends Fragment {
     }
 
     private void showConfirmationMessageAndEndTrip(final GlobalContext globalContext) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
                 Util.removeAllPrefs(getActivity());
                 ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
             }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.setTitle("End Trip Confirmation");
-        dialog.setMessage(getEndTripConfirmationMessage(globalContext));
-        dialog.show();
+        };
+        String title = "End Trip Confirmation";
+        String message = getEndTripConfirmationMessage(globalContext);
+        Util.showConfirmationDialog(getActivity(),title,message,listener);
     }
 
 
@@ -237,4 +243,6 @@ public class DashboardFragment extends Fragment {
         }
         return message;
     }
+
+
 }

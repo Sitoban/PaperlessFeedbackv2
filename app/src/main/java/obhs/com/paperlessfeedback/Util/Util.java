@@ -1,7 +1,9 @@
 package obhs.com.paperlessfeedback.Util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RadioButton;
@@ -124,5 +126,34 @@ public class Util {
             i++;
         }
         logd("-----------------");
+    }
+    public static void showConfirmationDialog(Context context, String title, String message,
+                                         DialogInterface.OnClickListener positivelistener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setPositiveButton("Yes",positivelistener);
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.show();
+    }
+
+    public static void showInvalidDialog(Context context, String title, String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.show();
     }
 }

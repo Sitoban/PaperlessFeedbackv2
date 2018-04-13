@@ -123,12 +123,14 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
         else
         {
             final Button verifyOtpButton = (Button) veificationFragment.getView().findViewById(R.id.verify_otp_button);
-            Toast.makeText(veificationFragment.getActivity() , "PNR Verification Failed", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(veificationFragment.getActivity() , "PNR Verification Failed", Toast.LENGTH_SHORT).show();
             verifyOtpButton.setEnabled(true);
+            String title = "PNR Verification Failed";
+            String message = "You have entered a wrong/invalid PNR or not for the same Seat, Verify the same and Re-enter correct PNR to proceed.";
+            Util.showInvalidDialog(veificationFragment.getActivity(),title,message);
+
         }
-        //final Button verifyOtpButton = (Button) veificationFragment.findViewById(R.id.verify_otp_button);
-        //verifyOtpButton.setEnabled(true);
-        //super.onPostExecute(aBoolean);
+
     }
 
 }
