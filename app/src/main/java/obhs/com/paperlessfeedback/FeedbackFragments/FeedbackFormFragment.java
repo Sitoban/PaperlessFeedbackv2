@@ -112,7 +112,7 @@ public class FeedbackFormFragment extends Fragment {
         feedbackObj.setTripStartDate(Util.getStringFromDate(globalContext.getCurrentTrip().getStartTime()));
         feedbackObj.setPnr(feedbackActivity.getCurrentPassenger().getPnr());
         feedbackObj.setMobileNumber(feedbackActivity.getCurrentPassenger().getMobileNumber());
-        feedbackObj.setCoachNumber(feedbackActivity.getCurrentCoach().getCoachNumber());
+        feedbackObj.setCoachNumber(feedbackActivity.getCurrentCoach().getCoachName());
         feedbackObj.setSeatNumber(String.valueOf(feedbackActivity.getCurrentSeatNumber()));
         feedbackObj.setPsi(String.valueOf(feedbackActivity.getCurrentFeedback().getPsi()));
         feedbackObj.setTripDirection((globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.GOING)?0:1);

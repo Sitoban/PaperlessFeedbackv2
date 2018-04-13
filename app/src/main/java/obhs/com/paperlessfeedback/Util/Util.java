@@ -122,7 +122,7 @@ public class Util {
         logd("-----------------");
         int i = 0;
         for(Coach coach: train.getCoachList()) {
-            logd("coachId: " + train.getCoachList().indexOf(coach) + " : " + i  + ", name: " + coach.getCoachNumber() + ", numPas: " + coach.getNumPasFeedback() + ", numtte: " + coach.getNumTteFeedback());
+            logd("coachId: " + train.getCoachList().indexOf(coach) + " : " + i  + ", name: " + coach.getCoachName() + ", numPas: " + coach.getNumPasFeedback() + ", numtte: " + coach.getNumTteFeedback());
             i++;
         }
         logd("-----------------");

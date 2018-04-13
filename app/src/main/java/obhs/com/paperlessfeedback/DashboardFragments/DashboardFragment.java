@@ -1,19 +1,15 @@
 package obhs.com.paperlessfeedback.DashboardFragments;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +33,6 @@ import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.RoomDatabase.Entity.FeedbackObj;
 import obhs.com.paperlessfeedback.Util.Util;
 
-import static android.content.Context.MODE_PRIVATE;
 import static obhs.com.paperlessfeedback.Util.Util.logd;
 
 /**
@@ -45,23 +40,6 @@ import static obhs.com.paperlessfeedback.Util.Util.logd;
  */
 
 public class DashboardFragment extends Fragment {
-
-    public void setupCoachSpinner(View view) {
-        Button takeFeedbackButton = view.findViewById(R.id.takeFeedbackButton);
-        takeFeedbackButton.setEnabled(false);
-////////////////
-        GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
-        Spinner coachSelectionSpinner = view.findViewById(R.id.coachSelectionSpinner);
-        List<String> coachListString = new ArrayList<String>();
-        for(Coach coach: globalContext.getCurrentTrain().getCoachList()) {
-            coachListString.add(coach.getCoachNumber());
-        }
-        ArrayAdapter<String> CoachSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, coachListString);
-        CoachSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        coachSelectionSpinner.setAdapter(CoachSpinnerAdapter);
-///////////////
-        takeFeedbackButton.setEnabled(true);
-    }
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +65,12 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setupCoachSpinner(getView());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -104,35 +88,27 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //validating if seat is available for feedback
-                long coachIndex = coachSelectionSpinner.getSelectedItemId();
                 Feedback.FeedbackType passengerType = getFeedbackTypeSelection(radioGroup);
-                Coach currentCoach = globalContext.getCurrentTrain().getCoachList().get((int)coachIndex);
-                if(!currentCoach.isSeatAvailableForFeedback()) {
+//                long coachIndex = coachSelectionSpinner.getSelectedItemId();
+//                Coach currentCoach = globalContext.getCurrentTrain().getCoachList().get((int)coachIndex);
+                String coachName = coachSelectionSpinner.getSelectedItem().toString();
+                Coach currentCoach = globalContext.getCurrentTrain().getCoachFromCoachName(coachName);
+                if(passengerType == Feedback.FeedbackType.PASSENGER && !currentCoach.isSeatAvailableForFeedback()) {
                     Toast.makeText(getActivity() , "No seat available, for feedback in this coach", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-//                Toast.makeText(getActivity() , "Let's Start the Bad Boy", Toast.LENGTH_SHORT).show();
-
                 Context context = view.getContext();
                 Intent intent = new Intent(context, FeedbackActivity.class);
 
-                //adding coach info to new acitivity
-//                intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
-
 //                intent.putExtra("coach", currentCoach);
                 globalContext.setCurrentLiveCoach(currentCoach);
-//                Log.d("debugTag", "this Fragment indent push: " + (Serializable)thisFragment);
-//                intent.putExtra("dashboard", (Serializable)thisFragment);
-                intent.putExtra("seatNumber", currentCoach.getRandomSeat());
-                //edit: pass appropriate type -- TT or passenger
-                Log.d("FeedbackType : ",passengerType.toString());
+
+                intent.putExtra("seatNumber", (passengerType == Feedback.FeedbackType.TTE)?0:currentCoach.getRandomSeat());
                 intent.putExtra("feedbackType", passengerType);
                 context.startActivity(intent);
             }
         });
-
-        setupCoachSpinner(view);
 
         final Button endTripButton = view.findViewById(R.id.endTripButton);
         endTripButton.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +149,15 @@ public class DashboardFragment extends Fragment {
                // Toast.makeText(getActivity(), "current trip status: " + globalContext.getCurrentTrip().getTripStatus(),
                //         Toast.LENGTH_LONG).show();
             }
+        });
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setupCoachSpinner(getView());
+            }
+
         });
 
         FloatingActionButton syncButton = view.findViewById(R.id.syncButton);
@@ -232,6 +217,25 @@ public class DashboardFragment extends Fragment {
         Util.showConfirmationDialog(getActivity(),title,message,listener);
     }
 
+    public void setupCoachSpinner(View view) {
+        Button takeFeedbackButton = view.findViewById(R.id.takeFeedbackButton);
+        takeFeedbackButton.setEnabled(false);
+        Feedback.FeedbackType passengerType = getFeedbackTypeSelection((RadioGroup)view.findViewById(R.id.passenger_type));
+
+        GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+        Spinner coachSelectionSpinner = view.findViewById(R.id.coachSelectionSpinner);
+        List<String> coachListString = new ArrayList<String>();
+        for(Coach coach: globalContext.getCurrentTrain().getCoachList()) {
+            if(coach.isFeedbackPending(passengerType)) {
+                coachListString.add(coach.getCoachName());
+            }
+        }
+        ArrayAdapter<String> CoachSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, coachListString);
+        CoachSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        coachSelectionSpinner.setAdapter(CoachSpinnerAdapter);
+
+        takeFeedbackButton.setEnabled(true);
+    }
 
     private String getEndTripConfirmationMessage(GlobalContext globalContext)
     {
