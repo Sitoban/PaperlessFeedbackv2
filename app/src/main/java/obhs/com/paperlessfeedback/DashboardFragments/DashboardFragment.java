@@ -93,7 +93,7 @@ public class DashboardFragment extends Fragment {
 //                Coach currentCoach = globalContext.getCurrentTrain().getCoachList().get((int)coachIndex);
                 String coachName = coachSelectionSpinner.getSelectedItem().toString();
                 Coach currentCoach = globalContext.getCurrentTrain().getCoachFromCoachName(coachName);
-                if(!currentCoach.isSeatAvailableForFeedback()) {
+                if(passengerType == Feedback.FeedbackType.PASSENGER && !currentCoach.isSeatAvailableForFeedback()) {
                     Toast.makeText(getActivity() , "No seat available, for feedback in this coach", Toast.LENGTH_LONG).show();
                     return;
                 }
