@@ -182,7 +182,7 @@ public class PassengerVeificationFragment extends Fragment{
         });
         //set coach number and seat number for feedback
         TextView textView = getView().findViewById(R.id.seatNumberTextView);
-        textView.setText("Coach : " + feedbackActivity.getCurrentCoach().getCoachNumber() + ", Seat: " + feedbackActivity.getCurrentSeatNumber());
+        textView.setText("Coach : " + feedbackActivity.getCurrentCoach().getCoachName() + ", Seat: " + feedbackActivity.getCurrentSeatNumber());
 
 
 

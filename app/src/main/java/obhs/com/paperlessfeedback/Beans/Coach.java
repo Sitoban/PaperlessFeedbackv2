@@ -2,9 +2,7 @@ package obhs.com.paperlessfeedback.Beans;
 
 import android.util.Log;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import obhs.com.paperlessfeedback.Util.Util;
@@ -18,7 +16,8 @@ public class Coach {
         AC,
         NON_AC;
     }
-    private String coachNumber;
+    private final static int NUM_FEEDBACK_PER_COACH_PER_TYPE = 2;
+    private String coachName;
     private int numberOfSeats;
     private CoachType coachType;
     //    private List<Feedback> tteFeedback= new ArrayList<Feedback>();
@@ -27,8 +26,23 @@ public class Coach {
     private int numPasFeedback;
     private List<Integer> randomSeatList;
 
-    public String getCoachNumber() {
-        return coachNumber;
+    public boolean isFeedbackPending(Feedback.FeedbackType feedbackType) {
+        boolean result = true;
+        if(feedbackType == Feedback.FeedbackType.TTE) {
+            if(numTteFeedback >=NUM_FEEDBACK_PER_COACH_PER_TYPE) {
+                result = false;
+            }
+        }
+        else if (feedbackType == Feedback.FeedbackType.PASSENGER) {
+            if(numPasFeedback >=NUM_FEEDBACK_PER_COACH_PER_TYPE) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public String getCoachName() {
+        return coachName;
     }
 
     public int getNumberofSeats() {
@@ -40,7 +54,7 @@ public class Coach {
     }
 
     public Coach(String cn, int nos, CoachType ct) {
-        coachNumber = cn;
+        coachName = cn;
         numberOfSeats = nos;
         coachType = ct;
         initRandomSeats();
@@ -98,7 +112,7 @@ public class Coach {
         }
         else if (feedback.getFeedbackType() == Feedback.FeedbackType.PASSENGER) {
             numPasFeedback++;
-            Log.d("debugTag", "ptr: " + this + " ,coach: " + getCoachNumber() + " , numFeed: " + getNumPasFeedback());
+            Log.d("debugTag", "ptr: " + this + " ,coach: " + getCoachName() + " , numFeed: " + getNumPasFeedback());
         }
     }
 

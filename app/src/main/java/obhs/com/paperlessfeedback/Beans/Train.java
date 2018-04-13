@@ -16,6 +16,17 @@ public class Train {
     private int numRequiredFeedbacks;
     private final static int NUM_FEEDBACK_PER_COACH_PER_TYPE = 2;
 
+    public Coach getCoachFromCoachName(String coachName) {
+        Coach result = null;
+        for(Coach coach: coachList) {
+            if(coach.getCoachName() == coachName){
+                result = coach;
+                break;
+            }
+        }
+        return result;
+    }
+
 //    public Train(int tn, int rn, int noc, List<Coach> cl) {
     public Train(String trName, int tn, int rn, List<Coach> cl) {
         trainName = trName;
@@ -24,6 +35,7 @@ public class Train {
 //        numberOfCoaches = noc;
         coachList = cl;
         //call after setting coachList
+
         getSetNumRequiredFeedbacks();
     }
 

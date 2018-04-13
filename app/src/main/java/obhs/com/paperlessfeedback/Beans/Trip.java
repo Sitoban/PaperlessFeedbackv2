@@ -111,7 +111,7 @@ public class Trip {
 //        int numTotal = getTrain().getNumRequiredFeedbacks();
         int numCompleted = 0;
         for(Coach coach:getTrain().getCoachList()) {
-//            Log.d("debugTag", "numFeed " + coach.getCoachNumber() + ": " + coach.getNumPasFeedback());
+//            Log.d("debugTag", "numFeed " + coach.getCoachName() + ": " + coach.getNumPasFeedback());
             numCompleted += coach.getNumPasFeedback() + coach.getNumTteFeedback();
         }
         return numCompleted;
