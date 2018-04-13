@@ -84,7 +84,7 @@ public class CameraHelper {
             Log.v("CameraHelper", "Bitmap Captured");
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+            image.compress(Bitmap.CompressFormat.JPEG, 40, baos);
             byte[] imageByteArray = baos.toByteArray();
             feedbackObj.setFaceImage(imageByteArray);
             new CloudConnection(globalContext).execute(feedbackObj);

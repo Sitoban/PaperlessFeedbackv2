@@ -13,7 +13,8 @@
             android:id="@+id/feedbackQuestionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp" />
+            android:textSize="@dimen/questions_font"
+            />
         <RadioGroup
             android:id="@+id/radioRatings"
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:id="@+id/radioExcellent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="@dimen/questions_font"
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
                 android:text="Excellent" />
@@ -33,7 +34,7 @@
                 android:id="@+id/radioVeryGood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="@dimen/questions_font"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
@@ -43,7 +44,7 @@
                 android:id="@+id/radioGood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="@dimen/questions_font"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
@@ -54,7 +55,7 @@
                 android:id="@+id/radioVeryAverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="@dimen/questions_font"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
@@ -64,7 +65,7 @@
                 android:id="@+id/radioPoor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="@dimen/questions_font"
 
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
