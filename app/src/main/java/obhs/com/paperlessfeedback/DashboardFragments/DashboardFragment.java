@@ -149,6 +149,7 @@ public class DashboardFragment extends Fragment {
 
                             globalContext.getCurrentTrain().resetCoachNumFeedbacks();
                             resetTripVarsForMidWay(globalContext, endTripButton);
+                            setupCoachSpinner(getView());
 
                         }};
                     String title = "Mid Trip Confirmation";
