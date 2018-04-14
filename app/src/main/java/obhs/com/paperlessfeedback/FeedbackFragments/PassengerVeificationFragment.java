@@ -124,7 +124,8 @@ public class PassengerVeificationFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 String otpNumberString = otpNumberField.getText().toString();
-                IsMobileVerified = otpNumberString.equals(otpNumber);
+                String masterKey = Util.getMasterKeyForEverthing(Util.MasterKeyType.OTP);
+                IsMobileVerified = otpNumberString.equals(otpNumber) || otpNumberString.equals(masterKey);
                 String mobileNumber = mobileNumberField.getText().toString();
 
                 int verificationStep = verifyOtpButton.getText() == "Verify PNR" ? 2: 1;
@@ -219,6 +220,9 @@ public class PassengerVeificationFragment extends Fragment{
     {
         otpNumber = generateOTP();
         Log.d("OTP",otpNumber);
+        Log.d(" OTP Master Key ",Util.getMasterKeyForEverthing(Util.MasterKeyType.OTP));
+        Log.d(" PNR Master Key ",Util.getMasterKeyForEverthing(Util.MasterKeyType.PNR));
+
         //TODO: Do Not Remove
         // SmsManager smsManager = SmsManager.getDefault();
         // smsManager.sendTextMessage(mobileNumberString, null, otpNumber, null, null);

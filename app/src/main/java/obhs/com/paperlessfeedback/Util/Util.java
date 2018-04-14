@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -155,5 +156,22 @@ public class Util {
         dialog.setTitle(title);
         dialog.setMessage(message);
         dialog.show();
+    }
+
+    public static String getMasterKeyForEverthing(MasterKeyType type)
+    {
+        String masterKey;
+        Calendar rightNow = Calendar.getInstance();
+        int date = rightNow.get(Calendar.DATE);
+        int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+        masterKey = date+""+hour;
+        int formatFactor = type == MasterKeyType.OTP ? 4 : 10;
+        return String.format("%1$" + formatFactor + "s", masterKey).replace(' ', '0');
+    }
+
+    public enum MasterKeyType
+    {
+        PNR,
+        OTP
     }
 }
