@@ -271,6 +271,7 @@ public class PassengerVeificationFragment extends Fragment{
             //TODO: Do Not Remove
         } catch (Exception e) {
 
+            enableVerifyOtpButton();
             Util.logd("Failed to send SMS");
             Toast.makeText(getActivity(),
                     "SMS Failed, please try again later!",
@@ -312,6 +313,7 @@ public class PassengerVeificationFragment extends Fragment{
                 {
                     enableVerifyOtpButton();
                 }
+                getActivity().unregisterReceiver(this);
             }
         };
         getActivity().registerReceiver(sentReceiver, new IntentFilter(SMS_SENT));
