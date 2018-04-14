@@ -83,7 +83,7 @@ public class DashboardFragment extends Fragment {
         Button takeFeedback = (Button) view.findViewById(R.id.takeFeedbackButton);
         final Spinner coachSelectionSpinner = view.findViewById(R.id.coachSelectionSpinner);
         final RadioGroup radioGroup = (RadioGroup)view.findViewById(R.id.passenger_type);
-        final Fragment thisFragment = this;
+//        final Fragment thisFragment = this;
         takeFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +104,19 @@ public class DashboardFragment extends Fragment {
 //                intent.putExtra("coach", currentCoach);
                 globalContext.setCurrentLiveCoach(currentCoach);
 
-                intent.putExtra("seatNumber", (passengerType == Feedback.FeedbackType.TTE)?0:currentCoach.getRandomSeat());
+                boolean needToGetRandomSeat = (passengerType == Feedback.FeedbackType.PASSENGER);
+                int seatNumber = 0;
+                if(needToGetRandomSeat) {
+                    seatNumber = currentCoach.getRandomSeat();
+                    //TODO: update only the changed coach
+                    //update preferences with remaining random seats
+                    int index = 0;
+                    for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
+                        Util.getPrefEditor(getActivity()).putString("Rand" + index, coach.getRandString()).apply();
+                        ++index;
+                    }
+                }
+                intent.putExtra("seatNumber", seatNumber);
                 intent.putExtra("feedbackType", passengerType);
                 context.startActivity(intent);
             }
@@ -123,12 +135,15 @@ public class DashboardFragment extends Fragment {
                     DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
+                            globalContext.getCurrentTrain().resetCoachRandomSeats();    // do it before saving Rand(i) prefs
+
                             int index = 0;
                             for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
                                 Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
+                                Util.getPrefEditor(getActivity()).putString("Rand" + index, coach.getRandString()).apply();
                                 ++index;
                             }
-
 
                             Util.updateTripStatusPref(getActivity(), Trip.getTripStatusIntVal(Trip.TripStatus.ARRIVING));
 
@@ -209,6 +224,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Util.removeAllPrefs(getActivity());
+                globalContext.getCurrentTrain().resetCoachRandomSeats();
                 ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
             }
         };

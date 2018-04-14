@@ -61,6 +61,20 @@ public class TrainSelectionFragment extends Fragment {
                         coach.setNumPasFeedback(Integer.parseInt(splitFB[0]));
                         coach.setNumTteFeedback(Integer.parseInt(splitFB[1]));
                     }
+                    String coachRandStr =  Util.getSharedPrefs(getActivity()).getString("Rand" + index, "null");
+                    if(coachRandStr == "null") {
+                        logd("unexpected coach randString info");
+                    }
+                    else {
+                        List<Integer> randomSeatList = new ArrayList<Integer>();
+                        if(coachRandStr != "") {
+                            String [] splitRand = coachRandStr.split(":");
+                            for (int i = 0; i < splitRand.length; i++) {
+                                randomSeatList.add(Integer.parseInt(splitRand[i]));
+                            }
+                        }
+                        coach.setCoachType(randomSeatList);
+                    }
                     ++index;
                 }
                 //load fragment
@@ -129,6 +143,7 @@ public class TrainSelectionFragment extends Fragment {
                 int index = 0;
                 for(Coach coach : globalContext.getCurrentTrain().getCoachList()) {
                     Util.getPrefEditor(getActivity()).putString("Coach" + index, "0:0").apply();
+                    Util.getPrefEditor(getActivity()).putString("Rand" + index, coach.getRandString()).apply();
                     ++index;
                 }
 

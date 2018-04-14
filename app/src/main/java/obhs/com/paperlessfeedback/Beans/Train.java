@@ -66,4 +66,10 @@ public class Train {
         }
     }
 
+    public void resetCoachRandomSeats() {
+        for(Coach coach: getCoachList()) {
+            coach.initRandomSeats();
+        }
+    }
+
 }

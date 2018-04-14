@@ -7,6 +7,8 @@ import java.util.List;
 
 import obhs.com.paperlessfeedback.Util.Util;
 
+import static obhs.com.paperlessfeedback.Util.Util.logd;
+
 /**
  * Created by mannis on 31-Mar-18.
  */
@@ -73,11 +75,30 @@ public class Coach {
             randomSeatList.add(seatArray[i-1]);
     }
 
+    public void setCoachType(List<Integer> randomSeatList) {
+        this.randomSeatList = randomSeatList;
+    }
+
     public Boolean isSeatAvailableForFeedback() {
         if(randomSeatList.size()>0)
             return true;
 
         return false;
+    }
+
+    public String getRandString() {
+        String randString = "";
+        int size = randomSeatList.size();
+        int index = 0;
+        for(int randNum : randomSeatList) {
+            randString += randNum;
+            if(index != size -1) {
+                randString += ":";
+            }
+            index++;
+        }
+        logd("randString for Coach " + getCoachName() + " : " + randString);
+        return randString;
     }
 
     //get a random seat number and delete it for later
