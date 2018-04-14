@@ -41,10 +41,20 @@ public class Util {
     // need to be moved to Trip
     public static void setupCustomTrain(List<Coach> coachList) {
         //2 AC + 2 NON AC coach
-        coachList.add(new Coach("A1", 5, Coach.CoachType.AC));
-        coachList.add(new Coach("A2", 5, Coach.CoachType.AC));
-        coachList.add(new Coach("S1", 10, Coach.CoachType.NON_AC));
-        coachList.add(new Coach("S2", 10, Coach.CoachType.NON_AC));
+//        coachList.add(new Coach("A1", 5, Coach.CoachType.AC));
+//        coachList.add(new Coach("A2", 5, Coach.CoachType.AC));
+//        coachList.add(new Coach("S1", 10, Coach.CoachType.NON_AC));
+//        coachList.add(new Coach("S2", 10, Coach.CoachType.NON_AC));
+
+        coachList.add(new Coach("C1", 78, Coach.CoachType.AC));
+        coachList.add(new Coach("D1", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D2", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D3", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D4", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D5", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D6", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D7", 108, Coach.CoachType.NON_AC));
+        coachList.add(new Coach("D8", 108, Coach.CoachType.NON_AC));
     }
 
 

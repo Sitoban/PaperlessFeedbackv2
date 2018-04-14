@@ -49,7 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
         final GlobalContext globalContext = (GlobalContext) getApplicationContext();
         List<Coach> coachList = new ArrayList<Coach>();
         setupCustomTrain(coachList);
-        globalContext.addTrain(new Train("Shatabdi Express",94312, 1, coachList));
+        globalContext.addTrain(new Train("GNT SC EXP",12705, 1, coachList));
     }
 
 
