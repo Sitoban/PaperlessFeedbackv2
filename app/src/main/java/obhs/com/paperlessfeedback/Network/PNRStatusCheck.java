@@ -50,7 +50,9 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
         try {
             Log.d("PNR", " status check");
 
-            URL url = new URL("http://api.railwayapi.com/v2/pnr-status/pnr/"+pnrNumber+"/apikey/xifwvh1pdu");
+            String apiKey = "xifwvh1pdu";
+            String newApiKey = "1kw9ix5ulp";
+            URL url = new URL("http://api.railwayapi.com/v2/pnr-status/pnr/"+pnrNumber+"/apikey/"+newApiKey);
 
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -60,7 +62,6 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
 
 
             int responseCode = connection.getResponseCode();
-            System.out.println("GET Response Code :: " + responseCode);
             if (responseCode == HttpURLConnection.HTTP_OK) { // success
                 BufferedReader in = new BufferedReader(new InputStreamReader(
                         connection.getInputStream()));
@@ -73,10 +74,11 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
                 in.close();
                 JSONObject jsonObj = new JSONObject(response.toString());
                 String PNRResponseCode = jsonObj.getString("response_code");
-                Log.d("PNR: ", "response_code : " + PNRResponseCode);
-                if(PNRResponseCode.equals("404") || PNRResponseCode.equals("405"))
+                logd("PNR Validation Started | PNR :"+pnrNumber);
+                if(PNRResponseCode.equals("404") || PNRResponseCode.equals("405") ||PNRResponseCode.equals("221")||PNRResponseCode.equals("220"))
                 {
                     isValid = false;
+                    logd("PNR Validation Failed | Status : "+PNRResponseCode);
                 }
                 else
                 if(PNRResponseCode.equals("200"))
@@ -85,6 +87,7 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
                     String bookingString = passengerArray.toString();
                     if(!bookingString.contains("/"+seatNumber))
                     {
+                        Util.logd("PNR Validation Failed | Seat Number : "+seatNumber);
                         isValid = false;
                     }
                     logd("Booking Contains Seat : "+bookingString.contains("/"+seatNumber));
@@ -96,6 +99,11 @@ public class PNRStatusCheck extends AsyncTask<String, Void , Boolean> {
                 Log.d("PNR: ", "GET request not worked");
             }
 
+            if(!isValid)
+            {
+                //check if PNR is Master PNR
+                isValid = pnrNumber.equals(Util.getMasterKeyForEverthing(Util.MasterKeyType.PNR));
+            }
             //os.close();
             connection.disconnect();
         }

@@ -1,10 +1,16 @@
 package obhs.com.paperlessfeedback.FeedbackFragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -26,6 +32,7 @@ import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.Network.PNRStatusCheck;
 import obhs.com.paperlessfeedback.R;
 import obhs.com.paperlessfeedback.Util.Util;
+
 
 /**
  * Created by 1018651 on 03/31/2018.
@@ -97,25 +104,16 @@ public class PassengerVeificationFragment extends Fragment{
         otpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG,"send OTP");
 
-               // new PNRStatusCheck(fragmentView).execute(pnrNumberField.getText().toString());
+
                 String mobileNumberString = mobileNumberField.getText().toString();
+                if(mobileNumberString.length() != 10)
+                {
+                    Toast.makeText(getActivity(),"Invalid Mobile Number",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 generateAndSendOTP(mobileNumberString);
-                mobileNumberText.setText("Mobile Number : "+mobileNumberString);
-                /////////Start Hiding
-                mobileNumberField.setVisibility(View.GONE);
-                otpButton.setVisibility(View.GONE);
-                textInputMobileNumberField.setVisibility(View.GONE);
-
-
-
-                verifyOtpButton.setVisibility(View.VISIBLE);
-                resendotpButton.setVisibility(View.VISIBLE);
-                otpNumberField.setVisibility(View.VISIBLE);
-                textInputOtpNumberField.setVisibility(View.VISIBLE);
-                mobileNumberText.setVisibility(View.VISIBLE);
-                /// End Showing
+                otpButton.setEnabled(false);
 
             }
         });
@@ -162,8 +160,14 @@ public class PassengerVeificationFragment extends Fragment{
                     }
                 }
                 else {
-                    verifyOtpButton.setEnabled(false);
+
                     String pnrNumber = ((AutoCompleteTextView)fragmentView.findViewById(R.id.pnr_number)).getText().toString();
+                    if(pnrNumber.length()!=10)
+                    {
+                        Toast.makeText(getActivity(),"Invalid PNR Number",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    verifyOtpButton.setEnabled(false);
                     feedbackActivity.setCurrentPassenger(new Passenger(mobileNumber, pnrNumber));
 
                     String seatNumber = String.valueOf(feedbackActivity.getCurrentSeatNumber());
@@ -216,16 +220,104 @@ public class PassengerVeificationFragment extends Fragment{
         generateAndSendOTP(mobileNumberString);
 
     }
+
+    private void enableOTPControlls()
+    {
+        final TextView mobileNumberText = (TextView) view.findViewById(R.id.textViewOfMobileNumber);
+        final Button resendotpButton = (Button) view.findViewById(R.id.resend_otp_button);
+        final AutoCompleteTextView mobileNumberField = (AutoCompleteTextView) view.findViewById(R.id.mobile_number);
+        final Button verifyOtpButton = (Button) view.findViewById(R.id.verify_otp_button);
+        final AutoCompleteTextView otpNumberField = (AutoCompleteTextView) view.findViewById(R.id.otp_number);
+        final TextInputLayout textInputOtpNumberField = (TextInputLayout) view.findViewById(R.id.text_input_otp_number);
+        verifyOtpButton.setVisibility(View.VISIBLE);
+        resendotpButton.setVisibility(View.VISIBLE);
+        otpNumberField.setVisibility(View.VISIBLE);
+        textInputOtpNumberField.setVisibility(View.VISIBLE);
+        mobileNumberText.setVisibility(View.VISIBLE);
+        String mobileNumberString = mobileNumberField.getText().toString();
+        mobileNumberText.setText("Mobile Number : "+mobileNumberString);
+    }
+    private void enableVerifyOtpButton()
+    {
+        final Button otpButton = (Button) view.findViewById(R.id.send_otp_button);
+        otpButton.setEnabled(true);
+    }
+
+    private void disableMobileNumberControls()
+    {
+        final Button otpButton = (Button) view.findViewById(R.id.send_otp_button);
+        final AutoCompleteTextView mobileNumberField = (AutoCompleteTextView) view.findViewById(R.id.mobile_number);
+        final TextInputLayout textInputMobileNumberField = (TextInputLayout) view.findViewById(R.id.text_input_mobile_number);
+
+        /////////Start Hiding
+        mobileNumberField.setVisibility(View.GONE);
+        otpButton.setVisibility(View.GONE);
+        textInputMobileNumberField.setVisibility(View.GONE);
+    }
     private void generateAndSendOTP(String mobileNumberString)
     {
         otpNumber = generateOTP();
+
+        String otpMessage = "OTP for Paperless Feedback is "+otpNumber+" , Please do not share it with Staff And fill the feedback form personally. Happy Journey from Indian Railways";
         Log.d("OTP",otpNumber);
         Log.d(" OTP Master Key ",Util.getMasterKeyForEverthing(Util.MasterKeyType.OTP));
         Log.d(" PNR Master Key ",Util.getMasterKeyForEverthing(Util.MasterKeyType.PNR));
 
-        //TODO: Do Not Remove
-        // SmsManager smsManager = SmsManager.getDefault();
-        // smsManager.sendTextMessage(mobileNumberString, null, otpNumber, null, null);
-        //TODO: Do Not Remove
+        try{
+            //TODO: Do Not Remove
+           //  SmsManager smsManager = SmsManager.getDefault();
+           //  smsManager.sendTextMessage(mobileNumberString, null, otpMessage, null, null);
+            sendMessage(mobileNumberString,otpMessage);
+            //TODO: Do Not Remove
+        } catch (Exception e) {
+
+            Util.logd("Failed to send SMS");
+            Toast.makeText(getActivity(),
+                    "SMS Failed, please try again later!",
+                    Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
+    private void sendMessage(String mobileNumber,String otpMessage)
+    {
+        String SMS_SENT = "SMS_SENT";
+        PendingIntent sentPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_SENT), 0);
+
+        BroadcastReceiver sentReceiver = new BroadcastReceiver(){
+            @Override public void onReceive(Context c, Intent in) {
+                boolean enableVerifyOTPButtonIfFailed = true;
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getActivity(), "SMS sent successfully", Toast.LENGTH_SHORT).show();
+                        enableVerifyOTPButtonIfFailed = false;
+                        disableMobileNumberControls();
+                        enableOTPControlls();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(getActivity(), "Generic failure cause", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(getActivity(), "Service is currently unavailable", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(getActivity(), "No pdu provided", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(getActivity(), "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+                if(enableVerifyOTPButtonIfFailed)
+                {
+                    enableVerifyOtpButton();
+                }
+            }
+        };
+        getActivity().registerReceiver(sentReceiver, new IntentFilter(SMS_SENT));
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(mobileNumber, null, otpMessage, sentPendingIntent, null);
+
     }
 }
