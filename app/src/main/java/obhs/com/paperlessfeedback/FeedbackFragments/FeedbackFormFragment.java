@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Beans.Feedback;
+import obhs.com.paperlessfeedback.Beans.Passenger;
 import obhs.com.paperlessfeedback.Beans.Trip;
 import obhs.com.paperlessfeedback.FeedbackActivity;
 import obhs.com.paperlessfeedback.R;
@@ -86,6 +87,8 @@ public class FeedbackFormFragment extends Fragment {
 
                 addFeedbackToDatabase();
                // Util.showInvalidDialog(getActivity(),"Feedback Completed","Thank You.");
+                //add number to used
+                globalContext.addUsedMobileNumber(feedbackActivity.getCurrentPassenger().getMobileNumber());
                 getActivity().finish();
             }
         });

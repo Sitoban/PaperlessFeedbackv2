@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import obhs.com.paperlessfeedback.ApplicationContext.GlobalContext;
 import obhs.com.paperlessfeedback.Beans.Feedback;
 import obhs.com.paperlessfeedback.Beans.Passenger;
 import obhs.com.paperlessfeedback.FeedbackActivity;
@@ -101,6 +102,8 @@ public class PassengerVeificationFragment extends Fragment{
         final TextInputLayout textInputOtpNumberField = (TextInputLayout) view.findViewById(R.id.text_input_otp_number);
         final PassengerVeificationFragment PVfragmentView = this;
         final TextView temp = (TextView) view.findViewById(R.id.LastMinuteTextView);
+        final GlobalContext globalContext = (GlobalContext) getActivity().getApplicationContext();
+
         otpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +115,13 @@ public class PassengerVeificationFragment extends Fragment{
                     Toast.makeText(getActivity(),"Invalid Mobile Number",Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                //check if number already used
+                if(globalContext.isMobileNumberUsed(mobileNumberString)) {
+                    Toast.makeText(getActivity(),"Mobile Number already used", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 generateAndSendOTP(mobileNumberString);
                 otpButton.setEnabled(false);
 

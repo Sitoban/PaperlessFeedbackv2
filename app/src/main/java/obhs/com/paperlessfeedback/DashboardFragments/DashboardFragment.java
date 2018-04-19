@@ -158,6 +158,7 @@ public class DashboardFragment extends Fragment {
 
                 }
                 else if(globalContext.getCurrentTrip().getTripStatus() == Trip.TripStatus.ARRIVING) {
+                    //end trip button press
                     showConfirmationMessageAndEndTrip(globalContext);
 //                    Util.removeAllPrefs(getActivity());
 //                    ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
@@ -192,6 +193,7 @@ public class DashboardFragment extends Fragment {
         globalContext.getCurrentTrip().setNextTripState();
         endTripButton.setText("End Trip");
         updatePendingCompleted();
+        globalContext.clearUsedMobileNumbers();
     }
 
     public void setNumEntriesLocal(int n) {
@@ -226,6 +228,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Util.removeAllPrefs(getActivity());
                 globalContext.getCurrentTrain().resetCoachRandomSeats();
+                globalContext.clearUsedMobileNumbers();
                 ((DashboardActivity)getActivity()).loadFragment(globalContext.getLiveTrainSelectionFragment());
             }
         };
