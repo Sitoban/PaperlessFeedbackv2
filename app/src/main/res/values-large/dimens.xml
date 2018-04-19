@@ -5,5 +5,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Feedback Form Fonts -->
-    <dimen name="questions_font">26dp</dimen>
+    <dimen name="questions_font">30dp</dimen>
 </resources>

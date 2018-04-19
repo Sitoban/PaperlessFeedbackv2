@@ -8,6 +8,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import obhs.com.paperlessfeedback.Util.Util;
+
 /**
  * Created by mannis on 01-Apr-18.
  */
@@ -17,31 +19,35 @@ public class Feedback {
     //edit: correct all four stringArrays
 
     //AC - Passenger
-    final static String[] feedbackQuestionsType1 = new String[] { "Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
-            "Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
-            "Collection of garbage from the coach compartments and clearance of dustbins.",
-            "Spraying of Mosquito/Cockroach/Fly Repellent and Providing Glue Board whenever required or on demand by passengers.",
-            "Behaviour/Response of Janitors/Supervisor (Including hygiene & cleanliness of Janitor/Supervisor)"
+    final static String[] feedbackQuestionsType1 = new String[] {
+            "Question 1 of 5: Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
+            "Question 2 of 5: Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
+            "Question 3 of 5: Collection of garbage from the coach compartments and clearance of dustbins.",
+            "Question 4 of 5: Spraying of Mosquito/Cockroach/Fly Repellent and Providing Glue Board whenever required or on demand by passengers.",
+            "Question 5 of 5: Behaviour/Response of Janitors/Supervisor (Including hygiene & cleanliness of Janitor/Supervisor)"
     };
 
     //NON_AC - Passenger
-    final static String[] feedbackQuestionsType2 = new String[] { "Cleaning of Toilets, Wash Basin and other fittings",
-            "Complete Cleaning of Passenger Compartment",
-            "Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
+    final static String[] feedbackQuestionsType2 = new String[] {
+            "Question 1 of 3: Cleaning of Toilets, Wash Basin and other fittings",
+            "Question 2 of 3: Complete Cleaning of Passenger Compartment",
+            "Question 3 of 3: Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
     };
 
     //AC - TTE
-    final static String[] feedbackQuestionsType3 = new String[] { "Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
-            "Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
-            "Collection of garbage from the coach compartments and clearance of dustbins.",
-            "Spraying of Mosquito/Cockroach/Fly Repellent and Providing Glue Board whenever required or on demand by passengers.",
-            "Behaviour/Response of Janitors/Supervisor (Including hygiene & cleanliness of Janitor/Supervisor)"
+    final static String[] feedbackQuestionsType3 = new String[] {
+            "Question 1 of 5: Cleaning of Toilets(Including toilet floor, commode pan, wall panels, shelf, mirror, wash basin, Disinfection and provision of deodorant etc.",
+            "Question 2 of 5: Cleaning  of Passenger Compartment (Including cleaning of passenger aisle, Vestibule areas, Doorway area and Doorway wash basin, spraying of air freshner and cleaning of dustbin)",
+            "Question 3 of 5: Collection of garbage from the coach compartments and clearance of dustbins.",
+            "Question 4 of 5: Spraying of Mosquito/Cockroach/Fly Repellent and Providing Glue Board whenever required or on demand by passengers.",
+            "Question 5 of 5: Behaviour/Response of Janitors/Supervisor (Including hygiene & cleanliness of Janitor/Supervisor)"
     };
 
     //NON_AC -TTE
-    final static String[] feedbackQuestionsType4 = new String[] { "Cleaning of Toilets, Wash Basin and other fittings",
-            "Complete Cleaning of Passenger Compartment",
-            "Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
+    final static String[] feedbackQuestionsType4 = new String[] {
+            "Question 1 of 3: Cleaning of Toilets, Wash Basin and other fittings",
+            "Question 2 of 3: Complete Cleaning of Passenger Compartment",
+            "Question 3 of 3: Behavior of Janitors/supervisor including hygiene & cleanliness of janitor/Supervisor "
     };
 
     public enum FeedbackType implements Serializable{
@@ -59,6 +65,7 @@ public class Feedback {
     private String[] currentFeedbackQuestions;
     private int currentQuestionIndex;
     private double score;
+    private boolean applyPenalty;
 
     public Feedback(FeedbackType feedbackType, Coach.CoachType coachType) {
         this.feedbackType = feedbackType;
@@ -66,6 +73,7 @@ public class Feedback {
         psi = 0;
         score = 0;
         currentQuestionIndex = -1;
+        applyPenalty = false;
         //call after setting feedbackType and coachType
         setFeedbackQuestions();
     }
@@ -135,13 +143,24 @@ public class Feedback {
         score = BigDecimal.valueOf(score)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
+        if(currentQuestionIndex == 1)
+        {
+            applyPenalty = score <= 1.2;
+            Util.logd("applying penalty for score : "+score);
+        }
     }
 
     public void calculatePsi() {
-        psi = (score/currentFeedbackQuestions.length) * 100;
+
+        psi = (score / currentFeedbackQuestions.length) * 100;
         psi = BigDecimal.valueOf(psi)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
+        if(psi < 50 || applyPenalty)
+        {
+            psi = 0;
+            Util.logd("setting psi to 0 when score : "+score+" < 1.5 or applyPenalty is true");
+        }
     }
 
     public double getPsi() {

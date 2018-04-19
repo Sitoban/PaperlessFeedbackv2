@@ -100,7 +100,7 @@ public class PassengerVeificationFragment extends Fragment{
         final AutoCompleteTextView otpNumberField = (AutoCompleteTextView) view.findViewById(R.id.otp_number);
         final TextInputLayout textInputOtpNumberField = (TextInputLayout) view.findViewById(R.id.text_input_otp_number);
         final PassengerVeificationFragment PVfragmentView = this;
-
+        final TextView temp = (TextView) view.findViewById(R.id.LastMinuteTextView);
         otpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +146,7 @@ public class PassengerVeificationFragment extends Fragment{
                             otpNumberField.setVisibility(View.GONE);
                             mobileNumberText.setVisibility(View.GONE);
                             textInputOtpNumberField.setVisibility(View.GONE);
+                            temp.setText("PNR Number");
                         }
                         else
                         {
@@ -229,6 +230,9 @@ public class PassengerVeificationFragment extends Fragment{
         final Button verifyOtpButton = (Button) view.findViewById(R.id.verify_otp_button);
         final AutoCompleteTextView otpNumberField = (AutoCompleteTextView) view.findViewById(R.id.otp_number);
         final TextInputLayout textInputOtpNumberField = (TextInputLayout) view.findViewById(R.id.text_input_otp_number);
+        final TextView temp = (TextView) view.findViewById(R.id.LastMinuteTextView);
+        temp.setText("OTP");
+
         verifyOtpButton.setVisibility(View.VISIBLE);
         resendotpButton.setVisibility(View.VISIBLE);
         otpNumberField.setVisibility(View.VISIBLE);
@@ -236,6 +240,7 @@ public class PassengerVeificationFragment extends Fragment{
         mobileNumberText.setVisibility(View.VISIBLE);
         String mobileNumberString = mobileNumberField.getText().toString();
         mobileNumberText.setText("Mobile Number : "+mobileNumberString);
+
     }
     private void enableVerifyOtpButton()
     {

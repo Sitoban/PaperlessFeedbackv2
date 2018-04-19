@@ -54,6 +54,7 @@ public class FeedbackFormFragment extends Fragment {
         nextQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currentFeedback.addScoreByRating(getCheckedRadioButtonText(radioGroup));
                 //edit: remove code duplication from this and below
                 String nextQuestion = currentFeedback.getNextQuestion();
                 if(nextQuestion == null)
@@ -64,7 +65,6 @@ public class FeedbackFormFragment extends Fragment {
                 }
                 feedbackQuestionTextView.setText(nextQuestion);
 
-                currentFeedback.addScoreByRating(getCheckedRadioButtonText(radioGroup));
             }
         });
 
@@ -85,6 +85,7 @@ public class FeedbackFormFragment extends Fragment {
                         String.valueOf(feedbackActivity.getCurrentCoach().getNumPasFeedback()) + ":" + String.valueOf(feedbackActivity.getCurrentCoach().getNumTteFeedback()) ).apply();
 
                 addFeedbackToDatabase();
+               // Util.showInvalidDialog(getActivity(),"Feedback Completed","Thank You.");
                 getActivity().finish();
             }
         });
