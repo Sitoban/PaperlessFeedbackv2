@@ -192,6 +192,7 @@ public class DashboardFragment extends Fragment {
         globalContext.getCurrentTrip().setNextTripState();
         endTripButton.setText("End Trip");
         updatePendingCompleted();
+        globalContext.clearUsedMobileNumbers();
     }
 
     public void setNumEntriesLocal(int n) {

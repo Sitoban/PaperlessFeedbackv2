@@ -4,7 +4,9 @@ import android.app.Application;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import obhs.com.paperlessfeedback.Beans.Coach;
 import obhs.com.paperlessfeedback.Beans.Train;
@@ -27,6 +29,8 @@ public class GlobalContext extends Application{
     private static AppDatabase db;
     private DashboardFragment liveDashboardFragment;
     private TrainSelectionFragment liveTrainSelectionFragment;
+
+    Set<String> usedMobileNumbers = new HashSet<String>();
 
     public long getCurrentTrainIndex() {
         return currentTrainIndex;
@@ -102,5 +106,20 @@ public class GlobalContext extends Application{
 
     public void setLiveTrainSelectionFragment(TrainSelectionFragment liveTrainSelectionFragment) {
         this.liveTrainSelectionFragment = liveTrainSelectionFragment;
+    }
+
+    public void addUsedMobileNumber(String mobileNumber) {
+        usedMobileNumbers.add(mobileNumber);
+    }
+
+    public boolean isMobileNumberUsed(String mobileNumber) {
+        boolean result = false;
+        if(usedMobileNumbers.contains(mobileNumber))
+            result = true;
+        return result;
+    }
+
+    public void clearUsedMobileNumbers() {
+        usedMobileNumbers.clear();
     }
 }
